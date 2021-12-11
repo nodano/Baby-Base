@@ -1,7 +1,11 @@
 {
   "recommendations": [
-    "felixfbecker.php-debug",
     "vscode-icons-team.vscode-icons",
-    "bmewburn.vscode-intelephense-client"
+    "formulahendry.auto-rename-tag",
+    "vincaslt.highlight-matching-tag",
+    "mrmlnc.vscode-csscomb",
+    "felixfbecker.php-debug",
+    "bmewburn.vscode-intelephense-client",
+    "neilbrayfield.php-docblocker"
   ]
 }
