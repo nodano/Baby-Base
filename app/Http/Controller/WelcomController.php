@@ -11,5 +11,6 @@ class WelcomController {
     // 他
 
     // require_once
+    require_once ROOT . "/view/index.php";
   }
 }

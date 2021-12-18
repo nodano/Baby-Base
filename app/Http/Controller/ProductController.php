@@ -14,6 +14,7 @@ class ProductController {
       // DBから取得
 
       // require_once
+      require_once ROOT . "/view/products/list.php";
     }
 
   /**
@@ -23,11 +24,13 @@ class ProductController {
    * @return void
    */
   public function fetchByID($id) {
+    echo "ID: ${id}の商品の表示";
     // 値の検証
 
     // DBから取得
 
     // require_once
+    require_once ROOT . "/view/products/index.php";
   }
 
   /**
@@ -36,11 +39,13 @@ class ProductController {
    * @return void
    */
   public function renderUpdate($id) {
+    echo "ID: ${id}の商品の更新";
     // ログイン確認
 
     // 本人確認
 
     // require_once
+    require_once ROOT . "/view/products/update.php";
   }
 
   /**
@@ -49,10 +54,9 @@ class ProductController {
    * @return void
    */
   public function update($id) {
+    echo "ID: ${id}の商品の出品更新";
     // ログイン確認
 
     // 本人確認
-
-    // require_once
   }
 }

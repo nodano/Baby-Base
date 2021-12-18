@@ -26,3 +26,18 @@ define("PUBLIC_URL", $protocol . $host . $path);
  * ルーティング
  */
 require_once(ROOT . "/config/web.php");
+
+// ルーティングと一致したものを実行
+$match = $router->match();
+if ($match !== false) {
+  if (is_callable($match['target'])) {
+      $match['target']();
+  } else {
+      $params = explode("::", $match['target']);
+      $action = new $params[0]();
+      call_user_func_array(array($action, $params[1]), $match['params']);
+  }
+} else {
+  require_once ROOT . "/view/404.php";
+  // header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+}

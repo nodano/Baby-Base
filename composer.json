@@ -3,7 +3,7 @@
   "description": "HEW2021",
   "autoload": {
     "psr-4": {
-      "HTTP\\Controller\\": "src/Http/Controller/"
+      "HTTP\\Controller\\": "app/Http/Controller/"
     }
   },
   "require": {

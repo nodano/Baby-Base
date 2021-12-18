@@ -10,6 +10,7 @@ class TransactionController {
    * @return void
    */
   public function fetchByID(int $id) {
+    echo "ID: ${id}の取引表示";
     // ログイン確認
 
     // 本人確認
@@ -17,5 +18,6 @@ class TransactionController {
     // DB取得
 
     // require_once
+    require_once ROOT . "/view/transaction.php";
   }
 }

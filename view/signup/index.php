@@ -9,9 +9,9 @@
 <body>
   <h1>Signup</h1>
 
-  <form action="" method="POST">
+  <form action="signup/confirm" method="POST">
     <input type="text" name="name" id="name">
-    <input type="submit" value="送信">
+    <input type="submit" value="確認">
   </form>
 </body>
 </html>

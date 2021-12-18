@@ -2,6 +2,10 @@
 
 ## Development
 
+```
+composer install
+```
+
 ### XDebug(PHP)
 
 1. XDebug のインストール

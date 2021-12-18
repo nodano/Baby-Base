@@ -12,6 +12,7 @@ class ListingController {
     // ログイン確認
 
     // view/listing/index.phpのrequire_once
+    require_once ROOT . "/view/listing/index.php";
   }
 
   /**
@@ -25,14 +26,16 @@ class ListingController {
     // 入力チェック
 
     // view/listing/confirm.phpのrequire_once
+    require_once ROOT . "/view/listing/confirm.php";
   }
 
   /**
-   * POST listing/confirm
+   * POST listing
    *
    * @return void
    */
   public function listing() {
+    echo "出品の実行";
     // ログイン確認
 
     // 入力チェック

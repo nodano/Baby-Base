@@ -11,11 +11,13 @@ class UserController {
    * @return void
    */
   public function fetchByID($id) {
+    echo "ID: {$id}のユーザーページを表示";
     // 値検証
 
     // DB取得
 
     // require_once
+    require_once ROOT . "/view/user/user.php";
   }
 
   /**
@@ -27,7 +29,8 @@ class UserController {
   // ログイン確認
   // DB取得
   // require_once
- }
+  require_once ROOT . "/view/user/index.php";
+}
 
   /**
    * GET mypage/info
@@ -38,6 +41,7 @@ class UserController {
   // ログイン確認
   // DB取得
   // require_once
+  require_once ROOT . "/view/user/info.php";
  }
 
   /**
@@ -46,6 +50,7 @@ class UserController {
    * @return void
    */
  public function infoUpdate() {
+   echo "アップデート実行";
   // ログイン確認
   // 入力検証
   // DB Update
@@ -61,6 +66,7 @@ class UserController {
   // ログイン確認
   // DB取得
   // require_once
+  require_once ROOT . "/view/user/profit.php";
  }
 
   /**
@@ -72,6 +78,7 @@ class UserController {
   // ログイン確認
   // DB取得
   // require_once
+  require_once ROOT . "/view/user/favorite.php";
  }
 
   /**
@@ -83,6 +90,7 @@ class UserController {
   // ログイン確認
   // DB取得
   // require_once
+  require_once ROOT . "/view/user/block.php";
  }
 
 }
