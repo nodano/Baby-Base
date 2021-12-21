@@ -1,8 +1,10 @@
 <?php
 
-namespace HTTP\Controller;
+namespace Http\Controllers;
 
-class ListingController {
+use Http\Controllers\Controller;
+
+class ListingController extends Controller {
   /**
    * GET listing
    *
@@ -10,9 +12,7 @@ class ListingController {
    */
   public function renderListing() {
     // ログイン確認
-
-    // view/listing/index.phpのrequire_once
-    require_once ROOT . "/view/listing/index.php";
+    $this->view("listing/index.php");
   }
 
   /**
@@ -25,8 +25,7 @@ class ListingController {
 
     // 入力チェック
 
-    // view/listing/confirm.phpのrequire_once
-    require_once ROOT . "/view/listing/confirm.php";
+    $this->view("listing/confirm.php");
   }
 
   /**
@@ -42,6 +41,6 @@ class ListingController {
 
     // DB登録
 
-    // PUBLIC_URL . products/登録したIDに遷移
+    // $this->push("products/${insertID}");
   }
 }

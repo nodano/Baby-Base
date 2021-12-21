@@ -1,8 +1,10 @@
 <?php
 
-namespace HTTP\Controller;
+namespace Http\Controllers;
 
-class ProductController {
+use Http\Controllers\Controller;
+
+class ProductController extends Controller {
     /**
      * GET products
      *
@@ -13,8 +15,7 @@ class ProductController {
 
       // DBから取得
 
-      // require_once
-      require_once ROOT . "/view/products/list.php";
+      $this->view("products/list.php");
     }
 
   /**
@@ -29,8 +30,7 @@ class ProductController {
 
     // DBから取得
 
-    // require_once
-    require_once ROOT . "/view/products/index.php";
+    $this->view("products/index.php");
   }
 
   /**
@@ -44,8 +44,7 @@ class ProductController {
 
     // 本人確認
 
-    // require_once
-    require_once ROOT . "/view/products/update.php";
+    $this->view("products/update.php");
   }
 
   /**

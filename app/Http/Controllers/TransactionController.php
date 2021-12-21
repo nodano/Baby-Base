@@ -1,8 +1,10 @@
 <?php
 
-namespace HTTP\Controller;
+namespace Http\Controllers;
 
-class TransactionController {
+use Http\Controllers\Controller;
+
+class TransactionController extends Controller {
   /**
    * GET transactions/[:id]
    *
@@ -17,7 +19,6 @@ class TransactionController {
 
     // DB取得
 
-    // require_once
-    require_once ROOT . "/view/transaction.php";
+    $this->view("transaction.php");
   }
 }

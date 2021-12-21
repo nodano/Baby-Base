@@ -1,8 +1,10 @@
 <?php
 
-namespace HTTP\Controller;
+namespace Http\Controllers;
 
-class UserController {
+use Http\Controllers\Controller;
+
+class UserController extends Controller {
 
   /**
    * GET users/[:id]
@@ -16,8 +18,7 @@ class UserController {
 
     // DB取得
 
-    // require_once
-    require_once ROOT . "/view/user/user.php";
+    $this->view("user/user.php");
   }
 
   /**
@@ -28,8 +29,7 @@ class UserController {
  public function mypage() {
   // ログイン確認
   // DB取得
-  // require_once
-  require_once ROOT . "/view/user/index.php";
+  $this->view("user/index.php");
 }
 
   /**
@@ -40,8 +40,7 @@ class UserController {
  public function info() {
   // ログイン確認
   // DB取得
-  // require_once
-  require_once ROOT . "/view/user/info.php";
+  $this->view("user/info.php");
  }
 
   /**
@@ -54,7 +53,7 @@ class UserController {
   // ログイン確認
   // 入力検証
   // DB Update
-  // 遷移
+  $this->push("mypage");
  }
 
   /**
@@ -65,8 +64,7 @@ class UserController {
  public function profit() {
   // ログイン確認
   // DB取得
-  // require_once
-  require_once ROOT . "/view/user/profit.php";
+  $this->view("user/profit.php");
  }
 
   /**
@@ -77,8 +75,7 @@ class UserController {
  public function favorite() {
   // ログイン確認
   // DB取得
-  // require_once
-  require_once ROOT . "/view/user/favorite.php";
+  $this->view("user/favorite.php");
  }
 
   /**
@@ -89,8 +86,7 @@ class UserController {
  public function block() {
   // ログイン確認
   // DB取得
-  // require_once
-  require_once ROOT . "/view/user/block.php";
+  $this->view("user/block.php");
  }
 
 }

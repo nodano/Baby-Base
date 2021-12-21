@@ -1,19 +1,21 @@
 <?php
 
-namespace HTTP\Controller;
+namespace Http\Controllers;
 
-class AuthController {
+use Http\Controllers\Controller;
+
+class AuthController extends Controller {
   /**
    * GET auth/signup
    *
    * @return void
    */
   public function renderSignup() {
-    // もしログインしていなかったら
-    require_once ROOT . "/view/signup/index.php";
-
-    // ログインしていれば
-      // PUBLIC_URL . mypageに遷移
+    if (!false) {
+      $this->view("signup/index.php");
+    } else {
+      $this->push("mypage");
+    }
   }
 
   /**
@@ -26,8 +28,7 @@ class AuthController {
 
     // ミスがあれば 戻る
 
-    // なければ view/signup/confirm.phpのrequire_once
-    require_once ROOT . "/view/signup/confirm.php";
+    $this->view("signup/confirm.php");
   }
 
   /**
@@ -43,7 +44,7 @@ class AuthController {
 
     // DB登録
 
-    // PUBLIC_URL . mypageに遷移
+    $this->push("mypage");
   }
 
   /**
@@ -52,12 +53,11 @@ class AuthController {
    * @return void
    */
   public function renderLogin() {
-    // もしログインしていなければ
-      // view/login.phpのrequire_once
-      require_once ROOT . "/view/login.php";
-
-    // ログインしていれば
-      // PUBLIC_URL . mypageに遷移
+    if (!false) {
+      $this->view("login.php");
+    } else {
+      $this->push("mypage");
+    }
   }
 
   /**
@@ -73,6 +73,6 @@ class AuthController {
 
     // パスワードの認証
 
-    // 遷移
+    $this->push("mypage");
   }
 }

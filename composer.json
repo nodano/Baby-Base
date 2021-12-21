@@ -3,7 +3,10 @@
   "description": "HEW2021",
   "autoload": {
     "psr-4": {
-      "HTTP\\Controller\\": "app/Http/Controller/"
+      "Http\\Controllers\\": "app/Http/Controllers/",
+      "Auth\\": "src/Auth/",
+      "Database\\": "src/Database/",
+      "Session\\": "src/Session/"
     }
   },
   "require": {
