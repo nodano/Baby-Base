@@ -2,7 +2,7 @@
 $router = new AltoRouter();
 $router->setBasePath('/Baby-Base/public/');
 
-$router->map('GET', '', 'Http\Controllers\WelcomController::get', 'welcom' );
+$router->map('GET', '', 'Http\Controllers\WelcomController::get', 'welcom');
 
 $router->map('GET', 'auth/signup', 'Http\Controllers\AuthController::renderSignup');
 $router->map('POST', 'auth/signup/confirm', 'Http\Controllers\AuthController::confirm');
@@ -11,7 +11,9 @@ $router->map('POST', 'auth/signup', 'Http\Controllers\AuthController::signup');
 $router->map('GET', 'auth/login', 'Http\Controllers\AuthController::renderLogin');
 $router->map('POST', 'auth/login', 'Http\Controllers\AuthController::auth');
 
-$router->map('GET', 'users/[i:id]', 'Http\Controllers\UserController::fetchByID', 'users-detail' );
+$router->map('GET', 'auth/logout', 'Http\Controllers\AuthController::logout');
+
+$router->map('GET', 'users/[i:id]', 'Http\Controllers\UserController::fetchByID', 'users-detail');
 
 $router->map('GET', 'mypage', 'Http\Controllers\UserController::mypage');
 
