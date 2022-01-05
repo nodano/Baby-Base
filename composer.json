@@ -10,6 +10,7 @@
     }
   },
   "require": {
-    "altorouter/altorouter": "^2.0"
+    "altorouter/altorouter": "^2.0",
+    "verot/class.upload.php": "^2.1"
   }
 }

@@ -15,9 +15,10 @@ $protocol = empty($_SERVER['HTTPS']) ? 'http://' : 'https://';
 $host = $_SERVER['HTTP_HOST'];
 $path = $_SERVER['REQUEST_URI'];
 
-$public_path = strstr($path, "public/", true) . "public/";
+$root_path = strstr($path, "public/", true);
+$public_path = $root_path . "public/";
+define("ROOT_URL", $protocol . $host . $root_path);
 define("PUBLIC_URL", $protocol . $host . $public_path);
-
 
 /**
  * ルーティング
@@ -28,11 +29,11 @@ require_once(ROOT . "/config/web.php");
 $match = $router->match();
 if ($match !== false) {
   if (is_callable($match['target'])) {
-      $match['target']();
+    $match['target']();
   } else {
-      $params = explode("::", $match['target']);
-      $action = new $params[0]();
-      call_user_func_array(array($action, $params[1]), $match['params']);
+    $params = explode("::", $match['target']);
+    $action = new $params[0]();
+    call_user_func_array(array($action, $params[1]), $match['params']);
   }
 } else {
   require_once ROOT . "/resources/views/404.php";

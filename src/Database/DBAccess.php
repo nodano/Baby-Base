@@ -9,7 +9,8 @@ use PDOStatement;
 /**
  * データベースアクセスクラス
  */
-class DBAccess {
+class DBAccess
+{
     private static $instance;
     private ?PDO $pdo = null;
     private int $lastInsertID = 0;
@@ -26,14 +27,15 @@ class DBAccess {
     {
     }
 
-    public function query(string $sql, array $params = null): PDOStatement {
+    public function query(string $sql, array $params = null): PDOStatement
+    {
         if (!$this->pdo) {
             $this->connect();
         }
-        
+
         try {
-            $stmt = $this->pdo->prepare($sql);
             $this->beginTransaction();
+            $stmt = $this->pdo->prepare($sql);
 
             if (!is_null($params)) {
                 $this->bind($stmt, $params);
@@ -45,16 +47,18 @@ class DBAccess {
 
             return $stmt;
         } catch (PDOException $e) {
-            $this->rollback();
+            $this->rollBack();
             throw $e;
         }
     }
 
-    public function getLastInsertID() {
+    public function getLastInsertID()
+    {
         return $this->lastInsertId;
     }
 
-    private function connect() {
+    private function connect()
+    {
         $config = require_once ROOT . "/config/database.php";
 
         $dsn = "{$config['driver']}:dbname={$config['dbname']};host={$config['host']};charset={$config['charset']}";
@@ -66,7 +70,8 @@ class DBAccess {
         $this->pdo = new PDO($dsn, $config['username'], $config['password'], $options);
     }
 
-    private function bind(PDOStatement $stmt, array $params) {
+    private function bind(PDOStatement $stmt, array $params)
+    {
         $i = 1;
         foreach ($params as $param) {
             $stmt->bindValue($i, $param);
@@ -75,19 +80,23 @@ class DBAccess {
         unset($params);
     }
 
-    private function beginTransaction() {
+    private function beginTransaction()
+    {
         $this->pdo->beginTransaction();
     }
-    
-    private function commit() {
+
+    private function commit()
+    {
         $this->pdo->commit();
     }
-    
-    private function rollback() {
-        $this->pdo->rollback();
+
+    private function rollBack()
+    {
+        $this->pdo->rollBack();
     }
-    
-    public function __destruct() {
+
+    public function __destruct()
+    {
         $this->pdo = null;
     }
 }
