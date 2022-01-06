@@ -37,3 +37,4 @@ $router->map('GET', 'products/[i:id]/update', 'Http\Controllers\ProductControlle
 $router->map('POST', 'products/[i:id]/update', 'Http\Controllers\ProductController::update');
 
 $router->map('GET', 'transactions/[i:id]', 'Http\Controllers\TransactionController::fetchByID');
+$router->map('POSt', 'transactions/[i:id]', 'Http\Controllers\TransactionController::transaction');

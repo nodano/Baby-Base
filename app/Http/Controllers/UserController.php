@@ -18,7 +18,9 @@ class UserController extends Controller
     echo "ID: {$id}のユーザーページを表示";
     // 値検証
 
-    // DB取得
+    // テーブルからユーザー情報を取得
+
+    // テーブルから出品した商品を取得
 
     $this->view("user/user.php");
   }
@@ -31,7 +33,10 @@ class UserController extends Controller
   public function mypage()
   {
     // ログイン確認
-    // DB取得
+    // テーブルからユーザー情報を取得
+
+    // テーブルから出品した商品を取得
+
     $this->view("user/index.php");
   }
 
