@@ -7,5 +7,5 @@
  */
 return array(
     'db'     => 'mysql',
-    'dbname' => 'babe-base',
+    'dbname' => 'babe_base',
 );

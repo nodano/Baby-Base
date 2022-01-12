@@ -37,4 +37,8 @@ $router->map('GET', 'products/[i:id]/update', 'Http\Controllers\ProductControlle
 $router->map('POST', 'products/[i:id]/update', 'Http\Controllers\ProductController::update');
 
 $router->map('GET', 'transactions/[i:id]', 'Http\Controllers\TransactionController::fetchByID');
-$router->map('POSt', 'transactions/[i:id]', 'Http\Controllers\TransactionController::transaction');
+$router->map('POST', 'transactions/[i:id]', 'Http\Controllers\TransactionController::transaction');
+
+$router->map('POST', 'transactions/[i:id]/payments', 'Http\Controllers\TransactionController::payments'); // 支払い処理
+$router->map('POST', 'transactions/[i:id]/send', 'Http\Controllers\TransactionController::send'); // 発送完了処理
+$router->map('POST', 'transactions/[i:id]/received', 'Http\Controllers\TransactionController::received'); // 受け取り完了処理
