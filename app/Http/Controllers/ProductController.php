@@ -14,13 +14,24 @@ class ProductController extends Controller
    */
   public function get()
   {
+    /**
+     * 検索した商品を表示する画面
+     * $products → fetchAll()
+     */
     // もしURLパラメータがあれば、取得と検証
-
+    if (isset($_GET['search'])) {
+      $search = $_GET['search'];
+    } else {
+      $search = "";
+    }
     // データベースから、商品の一覧を取得する
-    $products = []; // 本来はfetchAll()したものを代入する
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? LIMIT 30;", ["%$search%", "%$search%"]);
+
+    $products = $stmt->fetchAll();
 
     $params = ['products' => $products];
-    $this->view("products/list.php");
+    $this->view("products/list.php", $params);
   }
 
   /**
