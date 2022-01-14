@@ -1,5 +1,7 @@
-<?php require_once ROOT . "/resources/views/header.php" ; ?>
+<?php require_once ROOT . "/resources/views/header.php"; ?>
 
-  <h1>商品一覧</h1>
+<h1>商品一覧</h1>
+<?php var_dump($products); ?>
 </body>
+
 </html>
