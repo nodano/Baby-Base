@@ -5,6 +5,9 @@ namespace Http\Controllers;
 use Auth\User\LoginUser;
 use Database\DBAccess;
 use Http\Controllers\Controller;
+use Validate;
+
+require "./Validate.php";
 
 class AuthController extends Controller
 {
@@ -23,119 +26,6 @@ class AuthController extends Controller
   }
 
   /**
-   * バリデートの関数
-   */
-
-  /**
-   * 入力チェックの関数
-   */
-  public function validate_Trim()
-  {
-    /** 空白文字の削除/空文字チェック
-     * if(isset($_POST['~~~'])){ // $_POSTでデータが送られている場合
-     *    $~~~ = trim($_POST['~~~']); // trim()で空白文字のみを削除
-     * }else{
-     *    $~~~ = ""; //$_POSTで送られていない場合
-     * }
-     */
-
-    if (isset($_POST['name'])) {
-      $name = trim($_POST['name']);
-    } else {
-      $name = "";
-    }
-
-    if (isset($_POST['username'])) {
-      $username = trim($_POST['username']);
-    } else {
-      $username = "";
-    }
-
-    if (isset($_POST['email'])) {
-      $email = trim($_POST['email']);
-    } else {
-      $email = "";
-    }
-
-    if (isset($_POST['password'])) {
-      $password = trim($_POST['password']);
-    } else {
-      $password = "";
-    }
-
-    if (isset($_POST['password'])) {
-      $password2 = trim($_POST['password2']);
-    } else {
-      $password2 = "";
-    }
-
-    // return [$name, $username, $email, $password, $password2];
-    $array_Post = array($name, $username, $email, $password, $password2);
-
-    return $array_Post;
-  }
-
-  //文字数は足りているか
-  public function validete_WordCount($Word, $countMin, $countMax)
-  {
-    if (mb_strlen($Word) < $countMax + 1 && mb_strlen($Word) > $countMin - 1) {
-      //2文字以上8文字未満の場合の処理
-      return true;
-    } else {
-      //文字数が規定の値でなかった場合
-      return $this->push("auth/signup");
-    }
-  }
-
-  public function validate_JP($Word)
-  {
-    $validate_JP = "/^[ぁ-んァ-ヶ一-龠々]+$/u";
-    if (preg_match($validate_JP, $Word)) {
-      // 日本語の場合
-      return true;
-    } else {
-      // 日本語ではない場合
-      return $this->push("auth/signup");
-    }
-  }
-
-  public function validate_Eng($Word)
-  {
-    $validate_Eng = "/^[a-zA-Z0-9]+$/";
-    // 英数字であるかチェック
-    if (preg_match($validate_Eng, $Word)) {
-      // 英数字の場合
-      return True;
-    } else {
-      // 英数字ではない場合
-      return $this->push("auth/signup");
-    }
-  }
-
-  public function validate_Mail($Word)
-  {
-    $validate_Mail = "/^([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+$/";
-    if (preg_match($validate_Mail, $Word)) {
-      // メールの場合
-      return True;
-    } else {
-      // メールではない場合
-      return $this->push("auth/signup");
-    }
-  }
-
-  public function pass_check($password, $password2)
-  {
-    if ($password == $password2) {
-      // パスワードが一致していた場合
-      return true;
-    } else {
-      // パスワードの不一致
-      return $this->push("auth/signup");
-    }
-  }
-
-  /**
    * POST auth/signup/confirm
    *
    * @return void
@@ -145,15 +35,12 @@ class AuthController extends Controller
     if ($this->auth->check()) {
       $this->push("mypage");
     }
+
+    $Validate = new Validate;
+
     // 入力値の確認
 
-
-    // TODO: 空文字
-    // TODO: 文字の形式
-    // TODO: パスワードの一致
-
-    // TODO: 空文字 
-    $validated_array = $this->validate_Trim();
+    $validated_array = $Validate->validateTrim();
 
     $name = $validated_array[0];
     $username = $validated_array[1];
@@ -162,28 +49,35 @@ class AuthController extends Controller
     $password2 = $validated_array[4];
 
     if (empty($name) || empty($username) || empty($email) || empty($password)) {
-      // いずれかに文字列が格納されていない場合
       $this->push("auth/signup");
     }
 
-    //TODO: 文字の形式
-    //文字数チェック
-    $this->validete_WordCount($username, 2, 8);
-    $this->validete_WordCount($password, 2, 8);
+    if ($Validate->valideteWordCount($username, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
 
-    //英数字チェック
-    $this->validate_Eng($username);
-    $this->validate_Eng($password);
+    if ($Validate->valideteWordCount($password, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
 
-    //日本語チェック
-    $this->validate_JP($name);
+    if ($Validate->validateEng($username) == false) {
+      $this->push("auth/signup");
+    }
+    if ($Validate->validateEng($password) == false) {
+      $this->push("auth/signup");
+    }
 
+    if ($Validate->validateJP($name) == false) {
+      $this->push("auth/signup");
+    }
 
-    //メールチェック
-    $this->validate_Mail($email);
+    if ($Validate->validateMail($email) == false) {
+      $this->push("auth/signup");
+    }
 
-    //TODO: パスワードの一致
-    $this->pass_check($password, $password2);
+    if ($Validate->passCheck($password, $password2) == false) {
+      $this->push("auth/signup");
+    }
 
     // ミスがあれば 戻る
     if (false) {
@@ -202,17 +96,12 @@ class AuthController extends Controller
   {
     if ($this->auth->check()) {
       $this->push("mypage");
-    }    // 入力値の確認
+    }
+    // 入力値の確認
+    $Validate = new Validate;
 
-
-    // TODO: 空文字
-    // TODO: 文字の形式
-    // TODO: パスワードの一致
-
-    // TODO: 空文字 
-    $validated_array = $this->validate_Trim();
+    $validated_array = $Validate->validateTrim();
     if (empty($name) || empty($username) || empty($email) || empty($password)) {
-      // いずれかに文字列が格納されていない場合
       $this->push("auth/signup");
     }
 
@@ -222,25 +111,32 @@ class AuthController extends Controller
     $password = $validated_array[3];
     $password2 = $validated_array[4];
 
-    //TODO: 文字の形式
-    //文字数チェック
-    $this->validete_WordCount($username, 2, 8);
-    $this->validete_WordCount($password, 2, 8);
+    if ($Validate->valideteWordCount($username, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
 
-    //英数字チェック
-    $this->validate_Eng($username);
-    $this->validate_Eng($password);
+    if ($Validate->valideteWordCount($password, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
 
-    //日本語チェック
-    $this->validate_JP($name);
+    if ($Validate->validateEng($username) == false) {
+      $this->push("auth/signup");
+    }
+    if ($Validate->validateEng($password) == false) {
+      $this->push("auth/signup");
+    }
 
+    if ($Validate->validateJP($name) == false) {
+      $this->push("auth/signup");
+    }
 
-    //メールチェック
-    $this->validate_Mail($email);
+    if ($Validate->validateMail($email) == false) {
+      $this->push("auth/signup");
+    }
 
-    //TODO: パスワードの一致
-    $this->pass_check($password, $password2);
-
+    if ($Validate->passCheck($password, $password2) == false) {
+      $this->push("auth/signup");
+    }
 
     // ミスがあれば 戻る
     if (false) {
@@ -281,28 +177,26 @@ class AuthController extends Controller
   {
     if ($this->auth->check()) {
       $this->push("mypage");
-    }    // 入力値の確認
+    }
 
+    // 入力値の確認
+    $Validate = new Validate;
 
-    // TODO: 空文字
-    // TODO: 文字の形式
-    // TODO: パスワードの一致
-
-    // TODO: 空文字 
-    $validated_array = $this->validate_Trim();
+    $validated_array = $Validate->validateTrim();
     if (empty($username) || empty($password)) {
-      // いずれかに文字列が格納されていない場合
-      $this->push("auth/signup");
+      $this->push("auth/login");
     }
 
     $username = $validated_array[1];
     $password = $validated_array[3];
 
-    //TODO: 文字の形式
+    if ($Validate->valideteWordCount($username, 2, 8) == false) {
+      $this->push("auth/login");
+    }
 
-    //英数字チェック
-    $this->validate_Eng($username);
-    $this->validate_Eng($password);
+    if ($Validate->valideteWordCount($password, 2, 8) == false) {
+      $this->push("auth/login");
+    }
 
     // ミスがあれば 戻る
     if (false) {
