@@ -24,22 +24,13 @@ class UserController extends Controller
       }
     }
 
-    // TODO: 共通部分をまとめる???
+    $params = $this->getUserPageInfo($id);
 
-    $dba = DBAccess::getInstance();
-
-    $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
-    $user = $stmt->fetch();
-    // ユーザー情報の取得に失敗したら
-    if (!$user) {
+    // ユーザー情報の取得に失敗していれば
+    if (!$params['user']) {
       $this->push("");
     }
 
-    // テーブルから出品した商品を取得
-    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
-    $products = $stmt->fetchAll();
-
-    $params = ['user' => $user, 'products' => $products];
     $this->view("user/user.php", $params);
   }
 
@@ -55,20 +46,10 @@ class UserController extends Controller
       $this->push("auth/login");
     }
 
-    $dba = DBAccess::getInstance();
-
-    // テーブルからユーザー情報を取得
     $user = $this->auth->getUser();
     $user_id = $user->getId();
+    $params = $this->getUserPageInfo($user_id);
 
-    $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?", [$user_id]);
-    $user = $stmt->fetch();
-
-    // テーブルから出品した商品を取得
-    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$user_id]);
-    $products = $stmt->fetchAll();
-
-    $params = ['user' => $user, 'products' => $products];
     $this->view("user/index.php", $params);
   }
 
@@ -80,6 +61,9 @@ class UserController extends Controller
   public function info()
   {
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     // DB取得
     $this->view("user/info.php");
   }
@@ -93,6 +77,9 @@ class UserController extends Controller
   {
     echo "アップデート実行";
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     // 入力検証
     // DB Update
     $this->push("mypage");
@@ -106,6 +93,9 @@ class UserController extends Controller
   public function profit()
   {
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     // DB取得
     $this->view("user/profit.php");
   }
@@ -118,6 +108,9 @@ class UserController extends Controller
   public function favorite()
   {
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     // DB取得
     $this->view("user/favorite.php");
   }
@@ -130,7 +123,32 @@ class UserController extends Controller
   public function block()
   {
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     // DB取得
     $this->view("user/block.php");
+  }
+
+
+  /**
+   * マイページや会員ページの情報を取得する
+   *
+   * @param integer $id
+   * @return array
+   */
+  private function getUserPageInfo(int $id)
+  {
+    $dba = DBAccess::getInstance();
+
+    // ユーザー情報の取得
+    $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
+    $user = $stmt->fetch();
+
+    // テーブルから出品した商品を取得
+    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
+    $products = $stmt->fetchAll();
+
+    return ['user' => $user, 'products' => $products];
   }
 }
