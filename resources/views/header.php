@@ -15,7 +15,7 @@
         <li><a href="<?php echo PUBLIC_URL . "auth/signup" ?>">サインアップ</a></li>
         <li><a href="<?php echo PUBLIC_URL . "auth/login" ?>">ログイン</a></li>
         <li><a href="<?php echo PUBLIC_URL . "auth/logout" ?>">ログアウト</a></li>
-        <li><a href="<?php echo PUBLIC_URL . "users/1" ?>">ユーザーID: 1のページ</a></li>
+        <li><a href="<?php echo PUBLIC_URL . "users/2" ?>">ユーザーID: 2のページ</a></li>
         <li><a href="<?php echo PUBLIC_URL . "mypage" ?>">マイページ</a></li>
         <li><a href="<?php echo PUBLIC_URL . "mypage/info" ?>">ユーザー情報</a></li>
         <li><a href="<?php echo PUBLIC_URL . "mypage/profit" ?>">売上確認</a></li>

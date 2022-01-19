@@ -2,6 +2,7 @@
 
 namespace Http\Controllers;
 
+use Database\DBAccess;
 use Http\Controllers\Controller;
 
 class UserController extends Controller
@@ -15,14 +16,31 @@ class UserController extends Controller
    */
   public function fetchByID($id)
   {
-    echo "ID: {$id}のユーザーページを表示";
-    // 値検証
+    // もし自分のページなら遷移する
+    if ($this->auth->check()) {
+      $user = $this->auth->getUser();
+      if ($id == $user->getId()) {
+        $this->push("mypage");
+      }
+    }
 
-    // テーブルからユーザー情報を取得
+    // TODO: 共通部分をまとめる???
+
+    $dba = DBAccess::getInstance();
+
+    $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
+    $user = $stmt->fetch();
+    // ユーザー情報の取得に失敗したら
+    if (!$user) {
+      $this->push("");
+    }
 
     // テーブルから出品した商品を取得
+    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
+    $products = $stmt->fetchAll();
 
-    $this->view("user/user.php");
+    $params = ['user' => $user, 'products' => $products];
+    $this->view("user/user.php", $params);
   }
 
   /**
@@ -33,11 +51,25 @@ class UserController extends Controller
   public function mypage()
   {
     // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
+
+    $dba = DBAccess::getInstance();
+
     // テーブルからユーザー情報を取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?", [$user_id]);
+    $user = $stmt->fetch();
 
     // テーブルから出品した商品を取得
+    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$user_id]);
+    $products = $stmt->fetchAll();
 
-    $this->view("user/index.php");
+    $params = ['user' => $user, 'products' => $products];
+    $this->view("user/index.php", $params);
   }
 
   /**
