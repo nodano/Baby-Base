@@ -52,9 +52,13 @@ class ProductController extends Controller
     $stmt = $dba->query("SELECT * FROM pictures WHERE product_id = ?;", [$id]);
     $pictures = $stmt->fetchAll();
 
-    $user = $this->auth->getUser();
-    $user_id = $user->getId();
-    $is_seller = $product['user_id'] === $user_id;
+    if ($this->auth->check()) {
+      $user = $this->auth->getUser();
+      $user_id = $user->getId();
+      $is_seller = $product['user_id'] === $user_id;
+    } else {
+      $is_seller = false;
+    }
 
     // TODO: 写真のpathを絶対パスに変更
     $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'is_seller' => $is_seller];
