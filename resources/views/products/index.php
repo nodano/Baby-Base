@@ -16,17 +16,19 @@
     <?php endforeach; ?>
   </div>
 
-  <div>
-    <?php if ($product['status'] === 0) : ?>
-      <form action='<?php echo "../transactions/${id}"; ?>' method="post">
-        <input type="submit" value="取引">
-      </form>
-    <?php elseif ($product['status'] === 1) : ?>
-      <p>他のユーザーが取引済み</p>
-    <?php else : ?>
-      <p>取引済み</p>
-    <?php endif; ?>
-  </div>
+  <?php if (!$is_seller) : ?>
+    <div>
+      <?php if ($product['status'] === 0) : ?>
+        <form action='<?php echo "../transactions/${id}"; ?>' method="post">
+          <input type="submit" value="取引">
+        </form>
+      <?php elseif ($product['status'] === 1) : ?>
+        <p>他のユーザーが取引済み</p>
+      <?php else : ?>
+        <p>取引済み</p>
+      <?php endif; ?>
+    </div>
+  <?php endif; ?>
 </div>
 </body>
 
