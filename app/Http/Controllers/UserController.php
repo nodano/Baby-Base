@@ -96,8 +96,18 @@ class UserController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    // DB取得
-    $this->view("user/profit.php");
+
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    $dba = DBAccess::getInstance();
+
+    // transfersテーブルから商品名と利益を取得
+    $stmt = $dba->query("SELECT transfers.amount, products.name FROM transfers LEFT OUTER JOIN transactions ON transfers.transaction_id = transactions.id LEFT OUTER JOIN products ON transactions.product_id = products.id WHERE transactions.user_id = ?;", [$user_id]);
+    $transfers = $stmt->fetchAll();
+
+    $params = ['transfers' => $transfers];
+    $this->view("user/profit.php", $params);
   }
 
   /**
