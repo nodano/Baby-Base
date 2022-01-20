@@ -7,7 +7,6 @@ use Database\DBAccess;
 use Http\Controllers\Controller;
 use Validate;
 
-require "./Validate.php";
 
 class AuthController extends Controller
 {
