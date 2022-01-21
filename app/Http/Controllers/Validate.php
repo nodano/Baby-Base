@@ -7,49 +7,20 @@ class Validate
      * バリデートの関数
      */
 
-    // 空白文字の削除
-    public function validateTrim()
+    // 空白文字の削除 / nullチェック
+    public function validateTrim($string)
     {
-
-        if (isset($_POST['name'])) {
-            $name = trim($_POST['name']);
+        if (isset($string)) {
+            return trim($string);
         } else {
-            $name = "";
+            return false;
         }
-
-        if (isset($_POST['username'])) {
-            $username = trim($_POST['username']);
-        } else {
-            $username = "";
-        }
-
-        if (isset($_POST['email'])) {
-            $email = trim($_POST['email']);
-        } else {
-            $email = "";
-        }
-
-        if (isset($_POST['password'])) {
-            $password = trim($_POST['password']);
-        } else {
-            $password = "";
-        }
-
-        if (isset($_POST['password'])) {
-            $password2 = trim($_POST['password2']);
-        } else {
-            $password2 = "";
-        }
-
-        $array_Post = array($name, $username, $email, $password, $password2);
-
-        return $array_Post;
     }
 
     // 文字数のチェック
-    public function valideteWordCount($Word, $countMin, $countMax)
+    public function valideteWordCount($string, $min, $max)
     {
-        if (mb_strlen($Word) < $countMax + 1 && mb_strlen($Word) > $countMin - 1) {
+        if (mb_strlen($string) <= $max && mb_strlen($string) >= $min) {
             return true;
         } else {
             return false;
@@ -57,10 +28,10 @@ class Validate
     }
 
     // 日本語かどうか
-    public function validateJP($Word)
+    public function validateJP($string)
     {
-        $validate_JP = "/^[ぁ-んァ-ヶ一-龠々]+$/u";
-        if (preg_match($validate_JP, $Word)) {
+        $pattern = "/^[ぁ-んァ-ヶ一-龠々]+$/u";
+        if (preg_match($pattern, $string)) {
             return true;
         } else {
             return false;
@@ -68,10 +39,10 @@ class Validate
     }
 
     // 英数字かどうか
-    public function validateEng($Word)
+    public function validateEng($string)
     {
-        $validate_Eng = "/^[a-zA-Z0-9]+$/";
-        if (preg_match($validate_Eng, $Word)) {
+        $pattern = "/^[a-zA-Z0-9]+$/";
+        if (preg_match($pattern, $string)) {
             return True;
         } else {
             return false;
@@ -79,10 +50,10 @@ class Validate
     }
 
     // メールアドレスかどうか
-    public function validateMail($Word)
+    public function validateMail($string)
     {
-        $validate_Mail = "/^([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+$/";
-        if (preg_match($validate_Mail, $Word)) {
+        $pattern = "/^([a-zA-Z0-9])+([a-zA-Z0-9._-])*@([a-zA-Z0-9_-])+([a-zA-Z0-9._-]+)+$/";
+        if (preg_match($pattern, $string)) {
             return True;
         } else {
             return false;

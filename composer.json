@@ -6,7 +6,8 @@
       "Http\\Controllers\\": "app/Http/Controllers/",
       "Auth\\": "src/Auth/",
       "Database\\": "src/Database/",
-      "Session\\": "src/"
+      "Session\\": "src/Session/",
+      "": "src/"
     }
   },
   "require": {
