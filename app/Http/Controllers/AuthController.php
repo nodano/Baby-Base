@@ -5,6 +5,8 @@ namespace Http\Controllers;
 use Auth\User\LoginUser;
 use Database\DBAccess;
 use Http\Controllers\Controller;
+use Validate;
+
 
 class AuthController extends Controller
 {
@@ -32,13 +34,44 @@ class AuthController extends Controller
     if ($this->auth->check()) {
       $this->push("mypage");
     }
-    // 入力値の確認
-    // TODO: 空文字
-    // TODO: 文字の形式
-    // TODO: パスワードの一致
 
-    // ミスがあれば 戻る
-    if (false) {
+    $Validate = new Validate;
+
+    $name       = $Validate->validateTrim($_POST['name']);
+    $username   = $Validate->validateTrim($_POST['username']);
+    $email      = $Validate->validateTrim($_POST['email']);
+    $password   = $Validate->validateTrim($_POST['password']);
+    $password2  = $Validate->validateTrim($_POST['password2']);
+
+
+    if ($name == false || $username == false || $email == false || $password == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->valideteWordCount($username, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->valideteWordCount($password, 2, 8) == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->validateEng($username) == false) {
+      $this->push("auth/signup");
+    }
+    if ($Validate->validateEng($password) == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->validateJP($name) == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->validateMail($email) == false) {
+      $this->push("auth/signup");
+    }
+
+    if ($Validate->passCheck($password, $password2) == false) {
       $this->push("auth/signup");
     }
 
@@ -56,11 +89,14 @@ class AuthController extends Controller
       $this->push("mypage");
     }
     // 入力値の確認
-    // TODO: 空文字
-    // TODO: 文字の形式
+    $Validate = new Validate;
 
-    // ミスがあれば 戻る
-    if (false) {
+    $name     = $Validate->validateTrim($_POST['name']);
+    $username = $Validate->validateTrim($_POST['username']);
+    $email    = $Validate->validateTrim($_POST['email']);
+    $password = $Validate->validateTrim($_POST['password']);
+
+    if ($name == false || $username == false || $email == false || $password == false) {
       $this->push("auth/signup");
     }
 
@@ -99,13 +135,17 @@ class AuthController extends Controller
     if ($this->auth->check()) {
       $this->push("mypage");
     }
-    // 入力値の確認
-    // TODO: 空文字
 
-    // ミスがあれば 戻る
-    if (false) {
+    // 入力値の確認
+    $Validate = new Validate;
+
+    $login    = $Validate->validateTrim($_POST['login']);
+    $password = $Validate->validateTrim($_POST['password']);
+
+    if ($login == false || $password == false) {
       $this->push("auth/login");
     }
+
 
     $dba = DBAccess::getInstance();
     $stmt = $dba->query("SELECT id, username, password FROM users WHERE username = ? OR email = ? LIMIT 1;", [$_POST['login'], $_POST['login']]);
