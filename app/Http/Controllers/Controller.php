@@ -10,10 +10,6 @@ class Controller
   public function __construct()
   {
     $this->auth = new Auth();
-
-    echo "↓ Controller.php <br><pre>";
-    var_dump($_SESSION);
-    echo "</pre><br>";
   }
 
   /**
@@ -25,6 +21,7 @@ class Controller
    */
   protected function view(string $path, array $params = null)
   {
+    // 画面に渡す値の定義
     if ($params) {
       foreach ($params as $key => $value) {
         if (!preg_match("/[a-zA-Z_][a-zA-Z0-9_]*/", $key)) {
@@ -34,8 +31,14 @@ class Controller
       }
     }
 
+    // 全画面に渡す値の定義
+    $auth = ['is_login' => $this->auth->check(), 'user' => $this->auth->getUser()];
 
+
+    // ヘッダー、メインコンテンツ、フッター画面の読み込み
+    require_once ROOT . "/resources/views/header.php";
     require_once ROOT . "/resources/views/" . $path;
+    require_once ROOT . "/resources/views/footer.php";
   }
 
   protected function push(string $path)

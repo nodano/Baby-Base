@@ -17,8 +17,10 @@ $path = $_SERVER['REQUEST_URI'];
 
 $root_path = strstr($path, "public/", true);
 $public_path = $root_path . "public/";
+$assets_path = $root_path . "resources/assets/";
 define("ROOT_URL", $protocol . $host . $root_path);
 define("PUBLIC_URL", $protocol . $host . $public_path);
+define("ASSETS_URL", $protocol . $host . $assets_path);
 
 /**
  * ルーティング

@@ -64,8 +64,18 @@ class UserController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    // DB取得
-    $this->view("user/info.php");
+
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    $dba = DBAccess::getInstance();
+
+    // usersテーブルからパスワード以外の情報を取得する
+    $stmt = $dba->query("SELECT username, name, email FROM users WHERE id = ?", [$user_id]);
+    $user = $stmt->fetch();
+
+    $params = ['user' => $user];
+    $this->view("user/info.php", $params);
   }
 
   /**
@@ -82,7 +92,7 @@ class UserController extends Controller
     }
     // 入力検証
     // DB Update
-    $this->push("mypage");
+    // $this->push("mypage");
   }
 
   /**

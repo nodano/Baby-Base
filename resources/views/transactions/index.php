@@ -1,5 +1,3 @@
-<?php require_once ROOT . "/resources/views/header.php"; ?>
-
 <?php if ($is_seller) : ?>
   <h1>買い手の支払いが完了していません。</h1>
 <?php else : ?>

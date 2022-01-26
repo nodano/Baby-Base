@@ -1,0 +1,32 @@
+.form {
+  margin: 0 auto;
+  max-width: 620px;
+  box-sizing: border-box;
+}
+
+.form-item {
+  margin: 0 0 24px;
+}
+
+.form-item-label {
+  padding: 0 0 8px;
+}
+
+.form-item-control {
+  line-height: 1.75;
+}
+
+.form-item-input {
+  padding: 4px 11px;
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+.form-item-input:focus {
+  border-color: #40a9ff;
+  box-shadow: 0 0 0 2px #1890ff33;
+  outline: 0;
+}

@@ -1,5 +1,3 @@
-<?php require_once ROOT . "/resources/views/header.php"; ?>
-
 <?php if ($is_seller) : ?>
   <div>
     <h1>商品の発送を行ってください。</h1>
