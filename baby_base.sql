@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- ホスト: 127.0.0.1
--- 生成日時: 2022-01-04 07:39:17
+-- 生成日時: 2022-01-28 04:56:50
 -- サーバのバージョン： 10.4.21-MariaDB
 -- PHP のバージョン: 8.0.10
 
@@ -68,6 +68,18 @@ CREATE TABLE `chats` (
 -- --------------------------------------------------------
 
 --
+-- テーブルの構造 `deliveries`
+--
+
+CREATE TABLE `deliveries` (
+  `id` int(11) NOT NULL,
+  `transaction_id` int(11) NOT NULL,
+  `start` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- テーブルの構造 `payments`
 --
 
@@ -91,14 +103,6 @@ CREATE TABLE `pictures` (
   `path` text COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- テーブルのデータのダンプ `pictures`
---
-
-INSERT INTO `pictures` (`id`, `product_id`, `path`) VALUES
-(1, 3, '2022-01-04-07-38-37-0.png'),
-(2, 3, '2022-01-04-07-38-37-1.png');
-
 -- --------------------------------------------------------
 
 --
@@ -115,15 +119,6 @@ CREATE TABLE `products` (
   `user_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- テーブルのデータのダンプ `products`
---
-
-INSERT INTO `products` (`id`, `name`, `price`, `description`, `status`, `date`, `user_id`) VALUES
-(1, 'テスト商品1', 1000, 'テスト商品です', 0, '2022-01-04 06:37:24', 2),
-(2, 'テスト商品2', 3000, 'テスト商品のその2です。', 0, '2022-01-04 06:37:54', 2),
-(3, 'テスト商品[写真付き]', 200000, '写真付きのテスト商品です。', 0, '2022-01-04 06:38:39', 2);
-
 -- --------------------------------------------------------
 
 --
@@ -132,11 +127,11 @@ INSERT INTO `products` (`id`, `name`, `price`, `description`, `status`, `date`, 
 
 CREATE TABLE `transactions` (
   `id` int(11) NOT NULL,
-  `products_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
   `purchase_date` timestamp NULL DEFAULT current_timestamp(),
   `completion_date` timestamp NULL DEFAULT NULL,
-  `status` int(3) DEFAULT NULL
+  `status` int(3) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -147,7 +142,7 @@ CREATE TABLE `transactions` (
 
 CREATE TABLE `transfers` (
   `id` int(11) NOT NULL,
-  `payment_id` int(11) NOT NULL,
+  `transaction_id` int(11) NOT NULL,
   `amount` int(11) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -167,14 +162,6 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- テーブルのデータのダンプ `users`
---
-
-INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`) VALUES
-(1, 'user', '$2y$10$Ral7bOuEz.oU50bH48BM4uA/wlg/xP31zkYHhALDXVGxi1r6H67oC', '外町釣り機', 'test@gmail.com'),
-(2, 'test', '$2y$10$96jHHKmqMeGX0IBk4Ub2jO86WsnhHSQRKdNMcxoPPu04EuCFbwO1S', 'test', 'test@gmail.com');
-
---
 -- ダンプしたテーブルのインデックス
 --
 
@@ -183,6 +170,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `name`, `email`) VALUES
 --
 ALTER TABLE `addresses`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id` (`user_id`),
   ADD KEY `address_user_id` (`user_id`);
 
 --
@@ -200,6 +188,13 @@ ALTER TABLE `chats`
   ADD KEY `chats_user_is` (`user_id`),
   ADD KEY `chats_product_is` (`product_id`),
   ADD KEY `chats_transaction_id` (`transaction_id`);
+
+--
+-- テーブルのインデックス `deliveries`
+--
+ALTER TABLE `deliveries`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `f_transaction_id` (`transaction_id`);
 
 --
 -- テーブルのインデックス `payments`
@@ -227,7 +222,7 @@ ALTER TABLE `products`
 --
 ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `transactions_product_id` (`products_id`),
+  ADD KEY `transactions_product_id` (`product_id`),
   ADD KEY `transactions_user_id` (`user_id`);
 
 --
@@ -235,7 +230,7 @@ ALTER TABLE `transactions`
 --
 ALTER TABLE `transfers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `transfer_payment_id` (`payment_id`);
+  ADD KEY `transfer_transaction_id` (`transaction_id`);
 
 --
 -- テーブルのインデックス `users`
@@ -266,6 +261,12 @@ ALTER TABLE `chats`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- テーブルの AUTO_INCREMENT `deliveries`
+--
+ALTER TABLE `deliveries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- テーブルの AUTO_INCREMENT `payments`
 --
 ALTER TABLE `payments`
@@ -275,13 +276,13 @@ ALTER TABLE `payments`
 -- テーブルの AUTO_INCREMENT `pictures`
 --
 ALTER TABLE `pictures`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- テーブルの AUTO_INCREMENT `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- テーブルの AUTO_INCREMENT `transactions`
@@ -299,7 +300,7 @@ ALTER TABLE `transfers`
 -- テーブルの AUTO_INCREMENT `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- ダンプしたテーブルの制約
@@ -326,6 +327,12 @@ ALTER TABLE `chats`
   ADD CONSTRAINT `chats_user_is` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
+-- テーブルの制約 `deliveries`
+--
+ALTER TABLE `deliveries`
+  ADD CONSTRAINT `f_transaction_id` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`);
+
+--
 -- テーブルの制約 `payments`
 --
 ALTER TABLE `payments`
@@ -347,14 +354,14 @@ ALTER TABLE `products`
 -- テーブルの制約 `transactions`
 --
 ALTER TABLE `transactions`
-  ADD CONSTRAINT `transactions_product_id` FOREIGN KEY (`products_id`) REFERENCES `products` (`id`),
+  ADD CONSTRAINT `transactions_product_id` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`),
   ADD CONSTRAINT `transactions_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- テーブルの制約 `transfers`
 --
 ALTER TABLE `transfers`
-  ADD CONSTRAINT `transfer_payment_id` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`id`);
+  ADD CONSTRAINT `transfer_transaction_id` FOREIGN KEY (`transaction_id`) REFERENCES `transactions` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
