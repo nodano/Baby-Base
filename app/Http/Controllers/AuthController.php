@@ -7,7 +7,6 @@ use Database\DBAccess;
 use Http\Controllers\Controller;
 use Validate;
 
-
 class AuthController extends Controller
 {
   /**
