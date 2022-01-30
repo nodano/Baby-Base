@@ -23,10 +23,30 @@
   border: 1px solid #d9d9d9;
   border-radius: 2px;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  transition: border-color 0.3s ease, box-shadow .3s ease;
 }
 .form-item-input:focus {
   border-color: #40a9ff;
   box-shadow: 0 0 0 2px #1890ff33;
   outline: 0;
+}
+
+.form-item-input-textarea {
+  resize: none;
+}
+
+
+.form-fieldset {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.form-fieldset:not(:last-of-type) {
+  margin-bottom: 48px;
+}
+
+.form-fieldset-legend {
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  font-weight: bold;
 }

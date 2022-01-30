@@ -12,6 +12,15 @@
   margin-bottom: 40px;
 }
 
+.l-flex {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.w-5 {
+  width: 50%;
+}
+
 /* ↓全てTODO: 修正 */
 .grid-wrap {
   display: grid;

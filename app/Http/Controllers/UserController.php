@@ -91,7 +91,7 @@ class UserController extends Controller
       $this->push("auth/login");
     }
     // 入力検証
-    // DB Update
+    // TODO: DB Update
     // $this->push("mypage");
   }
 
