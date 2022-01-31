@@ -1,36 +1,14 @@
 <?php
 
-use Validate;
+use Http\Controllers\ListingController;
 
-/**
- * 商品情報のバリデート
- */
+$AuthController = new ListingController;
 
-$validate = new Validate;
+$AuthController->confirm();
 
-$name         = $validate->escape($_POST['name']);
-$description  = $validate->escape($_POST['description']);
-$price        = $validate->validateTrim($_POST['price']);
-
-if ($name == false || $description == false || $price == false) {
-  $this->push("listing");
-}
-
-if ($Validate->valideteWordCount($name, 1, 30) == false) {
-  $this->push("listing");
-}
-
-if ($Validate->valideteWordCount($description, 0, 300) == false) {
-  $this->push("listing");
-}
-
-if (is_numeric($price) == false) {
-  $this->push("listing");
-}
-
-if ($validate->validateInt($price, 100, 300000) == false) {
-  $this->push("listing");
-}
+$name         = $_POST['name'];
+$description  = $_POST['description'];
+$price        = $_POST['price'];
 
 /**
  * @param array | null $files 保存したい画像集

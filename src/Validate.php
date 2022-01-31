@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Validate
 {
@@ -13,7 +13,7 @@ class Validate
         if (isset($string)) {
             return trim($string);
         } else {
-            return false;
+            return trim($string);
         }
     }
 
