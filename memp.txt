@@ -1,0 +1,2 @@
+# 必須
+- 画面のhtmlspecialchars

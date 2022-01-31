@@ -1,5 +1,3 @@
-<?php require_once ROOT . "/resources/views/header.php"; ?>
-
 <?php if ($is_seller) : ?>
   <h1>商品の受け取り待ち</h1>
 <?php else : ?>
