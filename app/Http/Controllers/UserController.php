@@ -2,6 +2,7 @@
 
 namespace Http\Controllers;
 
+use Auth\User\LoginUser;
 use Database\DBAccess;
 use Http\Controllers\Controller;
 
@@ -79,20 +80,37 @@ class UserController extends Controller
   }
 
   /**
+   * TODO: 作成
+   * POST mypage/info/confirm
+   */
+
+  /**
    * POST mypage/info
    *
    * @return void
    */
   public function infoUpdate()
   {
-    echo "アップデート実行";
     // ログイン確認
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
+
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
     // 入力検証
-    // TODO: DB Update
-    // $this->push("mypage");
+
+    $dba = DBAccess::getInstance();
+    // 重複確認
+
+    $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $dba->query("UPDATE users SET username = ?, password = ?, name = ?, email = ? WHERE id = ? LIMIT 1;", [$_POST['username'], $hashed_password, $_POST['name'], $_POST['email'], $user_id]);
+
+    $updateUser = new LoginUser($user_id, $_POST['username']);
+    $this->auth->login($updateUser);
+
+    $this->push("mypage");
   }
 
   /**

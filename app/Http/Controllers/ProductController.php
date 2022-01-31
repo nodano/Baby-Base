@@ -72,7 +72,6 @@ class ProductController extends Controller
    */
   public function renderUpdate($id)
   {
-    echo "ID: ${id}の商品の更新";
     // ログイン確認
 
     /**
@@ -91,7 +90,6 @@ class ProductController extends Controller
    */
   public function update($id)
   {
-    echo "ID: ${id}の商品の出品更新";
     // ログイン確認
 
     /**
