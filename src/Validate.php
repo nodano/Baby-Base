@@ -13,7 +13,7 @@ class Validate
         if (isset($string)) {
             return trim($string);
         } else {
-            return trim($string);
+            return false;
         }
     }
 
