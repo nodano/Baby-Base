@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @param array | null $files 保存したい画像集
  */

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class Validate
 {
@@ -20,8 +20,12 @@ class Validate
     // 文字数のチェック
     public function valideteWordCount($string, $min, $max)
     {
-        if (mb_strlen($string) <= $max && mb_strlen($string) >= $min) {
-            return true;
+        if (mb_strlen($string) <= $max) {
+            if (mb_strlen($string) >= $min) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
@@ -65,6 +69,26 @@ class Validate
     {
         if ($password == $password2) {
             return true;
+        } else {
+            return false;
+        }
+    }
+
+    // エスケープ処理
+    public function escape($string)
+    {
+        return htmlspecialchars($string, ENT_QUOTES, "UTF-8");
+    }
+
+    // 数値が既定値内であるか
+    public function validateInt($int, $min, $max)
+    {
+        if ($int <= $max) {
+            if ($int >= $min) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }

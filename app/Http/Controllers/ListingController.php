@@ -6,6 +6,8 @@ use Database\DBAccess;
 use Http\Controllers\Controller;
 use Verot\Upload\Upload;
 
+use Validate;
+
 /**
  * TODO: 画像アップロード部分の修正 --- アップロード用のクラスを作成し、保存先などの情報を保存する
  */
@@ -33,6 +35,36 @@ class ListingController extends Controller
   {
     if (!$this->auth->check()) {
       $this->push("auth/login");
+    }
+
+    /**
+     * 商品情報のバリデート
+     */
+
+    $validate = new Validate;
+
+    $name         = $validate->escape($_POST['name']);
+    $description  = $validate->escape($_POST['description']);
+    $price        = $validate->validateTrim($_POST['price']);
+
+    if ($name == false || $description == false || $price == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->valideteWordCount($name, 1, 30) == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->valideteWordCount($description, 1, 300) == false) {
+      $this->push("listing");
+    }
+
+    if (is_numeric($price) == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->validateInt($price, 100, 300000) == false) {
+      $this->push("listing");
     }
 
     // 入力チェック
@@ -107,9 +139,34 @@ class ListingController extends Controller
     }
 
     /**
-     * TODO: 入力チェック
-     *  - 変更される可能性があるため、全く同じ入力チェックを行う
+     * 商品情報のバリデート
      */
+
+    $validate = new Validate;
+
+    $name         = $validate->escape($_POST['name']);
+    $description  = $validate->escape($_POST['description']);
+    $price        = $validate->validateTrim($_POST['price']);
+
+    if ($name == false || $description == false || $price == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->valideteWordCount($name, 1, 30) == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->valideteWordCount($description, 1, 300) == false) {
+      $this->push("listing");
+    }
+
+    if (is_numeric($price) == false) {
+      $this->push("listing");
+    }
+
+    if ($validate->validateInt($price, 100, 300000) == false) {
+      $this->push("listing");
+    }
 
     $upload_files = []; // メインディレクトリに移動できた画像の配列
     if (isset($_POST['files'])) {
@@ -127,7 +184,6 @@ class ListingController extends Controller
 
     /**
      * 取引をデータベースに登録
-     * TODO: ログインユーザーの値をメソッドで取得
      */
     $dba = DBAccess::getInstance();
     $dba->query("INSERT INTO products (name, price, description, user_id) VALUES (?, ?, ?, ?);", [$_POST['name'], $_POST['price'], $_POST['description'], $_SESSION['id']]);
