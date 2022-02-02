@@ -41,21 +41,21 @@ class ListingController extends Controller
      * 商品情報のバリデート
      */
 
-    $Validate = new Validate;
+    $validate = new Validate;
 
-    $name         = $Validate->escape($_POST['name']);
-    $description  = $Validate->escape($_POST['description']);
-    $price        = $Validate->validateTrim($_POST['price']);
+    $name         = $validate->escape($_POST['name']);
+    $description  = $validate->escape($_POST['description']);
+    $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
       $this->push("listing");
     }
 
-    if ($Validate->valideteWordCount($name, 1, 30) == false) {
+    if ($validate->valideteWordCount($name, 1, 30) == false) {
       $this->push("listing");
     }
 
-    if ($Validate->valideteWordCount($description, 0, 300) == false) {
+    if ($validate->valideteWordCount($description, 1, 300) == false) {
       $this->push("listing");
     }
 
@@ -63,7 +63,7 @@ class ListingController extends Controller
       $this->push("listing");
     }
 
-    if ($Validate->validateInt($price, 100, 300000) == false) {
+    if ($validate->validateInt($price, 100, 300000) == false) {
       $this->push("listing");
     }
 
@@ -137,29 +137,26 @@ class ListingController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    if (!$this->auth->check()) {
-      $this->push("auth/login");
-    }
 
     /**
      * 商品情報のバリデート
      */
 
-    $Validate = new Validate;
+    $validate = new Validate;
 
-    $name         = $Validate->escape($_POST['name']);
-    $description  = $Validate->escape($_POST['description']);
-    $price        = $Validate->validateTrim($_POST['price']);
+    $name         = $validate->escape($_POST['name']);
+    $description  = $validate->escape($_POST['description']);
+    $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
       $this->push("listing");
     }
 
-    if ($Validate->valideteWordCount($name, 1, 30) == false) {
+    if ($validate->valideteWordCount($name, 1, 30) == false) {
       $this->push("listing");
     }
 
-    if ($Validate->valideteWordCount($description, 0, 300) == false) {
+    if ($validate->valideteWordCount($description, 1, 300) == false) {
       $this->push("listing");
     }
 
@@ -167,14 +164,9 @@ class ListingController extends Controller
       $this->push("listing");
     }
 
-    if ($Validate->validateInt($price, 100, 300000) == false) {
+    if ($validate->validateInt($price, 100, 300000) == false) {
       $this->push("listing");
     }
-
-    /**
-     * TODO: 入力チェック
-     *  - 変更される可能性があるため、全く同じ入力チェックを行う
-     */
 
     $upload_files = []; // メインディレクトリに移動できた画像の配列
     if (isset($_POST['files'])) {
@@ -192,7 +184,6 @@ class ListingController extends Controller
 
     /**
      * 取引をデータベースに登録
-     * TODO: ログインユーザーの値をメソッドで取得
      */
     $dba = DBAccess::getInstance();
     $dba->query("INSERT INTO products (name, price, description, user_id) VALUES (?, ?, ?, ?);", [$_POST['name'], $_POST['price'], $_POST['description'], $_SESSION['id']]);
