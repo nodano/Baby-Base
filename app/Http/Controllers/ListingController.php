@@ -6,6 +6,8 @@ use Database\DBAccess;
 use Http\Controllers\Controller;
 use Verot\Upload\Upload;
 
+use Validate;
+
 /**
  * TODO: 画像アップロード部分の修正 --- アップロード用のクラスを作成し、保存先などの情報を保存する
  */
@@ -33,6 +35,36 @@ class ListingController extends Controller
   {
     if (!$this->auth->check()) {
       $this->push("auth/login");
+    }
+
+    /**
+     * 商品情報のバリデート
+     */
+
+    $Validate = new Validate;
+
+    $name         = $Validate->escape($_POST['name']);
+    $description  = $Validate->escape($_POST['description']);
+    $price        = $Validate->validateTrim($_POST['price']);
+
+    if ($name == false || $description == false || $price == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->valideteWordCount($name, 1, 30) == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->valideteWordCount($description, 0, 300) == false) {
+      $this->push("listing");
+    }
+
+    if (is_numeric($price) == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->validateInt($price, 100, 300000) == false) {
+      $this->push("listing");
     }
 
     // 入力チェック
@@ -104,6 +136,39 @@ class ListingController extends Controller
   {
     if (!$this->auth->check()) {
       $this->push("auth/login");
+    }
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
+
+    /**
+     * 商品情報のバリデート
+     */
+
+    $Validate = new Validate;
+
+    $name         = $Validate->escape($_POST['name']);
+    $description  = $Validate->escape($_POST['description']);
+    $price        = $Validate->validateTrim($_POST['price']);
+
+    if ($name == false || $description == false || $price == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->valideteWordCount($name, 1, 30) == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->valideteWordCount($description, 0, 300) == false) {
+      $this->push("listing");
+    }
+
+    if (is_numeric($price) == false) {
+      $this->push("listing");
+    }
+
+    if ($Validate->validateInt($price, 100, 300000) == false) {
+      $this->push("listing");
     }
 
     /**

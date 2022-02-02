@@ -7,7 +7,6 @@ use Database\DBAccess;
 use Http\Controllers\Controller;
 use Validate;
 
-
 class AuthController extends Controller
 {
   /**
@@ -155,7 +154,7 @@ class AuthController extends Controller
       $this->push("auth/login?error=auth");
     }
 
-    if (password_verify($_POST['password'], $user['password'])) {
+    if (!password_verify($_POST['password'], $user['password'])) {
       $loginUser = new LoginUser($user['id'], $user['username']);
       $this->auth->login($loginUser);
 
