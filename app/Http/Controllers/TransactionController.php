@@ -235,7 +235,7 @@ class TransactionController extends Controller
     $user = $this->auth->getUser();
     $user_id = $user->getId();
 
-    $stmt = $dba->query("SELECT user_id FROM transactions WHERE id = ? LIMIT 1;", [$id]);
+    $stmt = $dba->query("SELECT transactions.user_id, products.price FROM transactions LEFT OUTER JOIN products ON transactions.product_id = products.id WHERE transactions.id = ? LIMIT 1;", [$id]);
     $transactions = $stmt->fetch();
 
     // 取得失敗 又は 購入者ではない
@@ -243,9 +243,12 @@ class TransactionController extends Controller
       $this->push("products/${id}");
     }
 
-
     // transactionの状態を4に、完了日を更新
     $dba->query("UPDATE transactions SET status = 4 WHERE id = ? LIMIT 1;", [$id]);
+
+    // transfersテーブルに利益を保存
+    $profit = $transactions['price'] * 0.9;
+    $dba->query("INSERT INTO transfers (transaction_id, amount) VALUES (?, ?);", [$id, $profit]);
 
     // 取引画面に戻る
     $this->push("transactions/${id}");

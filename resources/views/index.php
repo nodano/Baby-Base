@@ -1,12 +1,79 @@
-<?php require_once ROOT . "/resources/views/header.php"; ?>
-<h1>トップページ</h1>
-<pre>
-<?php
-var_dump($products);
-var_dump($products2);
-var_dump($products3);
-?>
-</pre>
-</body>
+<div class="hero-image-container">
+  <img src="<?php echo ASSETS_URL . 'images/main.jpg'; ?>" alt="Baby-Base メイン画像" class="hero-image">
+</div>
 
-</html>
+<article>
+  <section>
+    <h2 class="section-title">新着アイテム</h2>
+    <div class="card-container">
+
+      <?php
+      foreach ($latest_products as $product) :
+      ?>
+        <div class="card">
+          <div class="card-header">
+            <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
+              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
+              <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
+            </a>
+            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+          </div>
+          <div class="card-body"><?php echo $product['name']; ?></div>
+        </div>
+      <?php
+      endforeach;
+      ?>
+
+    </div>
+
+    <a href="" class="button button-rounded">もっと見る</a>
+  </section>
+  <section>
+    <h2 class="section-title">人気アイテム</h2>
+    <div class="card-container">
+
+      <?php
+      foreach ($popular_products as $product) :
+      ?>
+        <div class="card">
+          <div class="card-header">
+            <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
+              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
+              <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
+            </a>
+            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+          </div>
+          <div class="card-body"><?php echo $product['name']; ?></div>
+        </div>
+      <?php
+      endforeach;
+      ?>
+
+    </div>
+    <a href="" class="button button-rounded">もっと見る</a>
+  </section>
+  <section>
+    <h2 class="section-title">おすすめアイテム</h2>
+    <div class="card-container">
+
+      <?php
+      foreach ($recommend_products as $product) :
+      ?>
+        <div class="card">
+          <div class="card-header">
+            <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
+              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
+              <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
+            </a>
+            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+          </div>
+          <div class="card-body"><?php echo $product['name']; ?></div>
+        </div>
+      <?php
+      endforeach;
+      ?>
+
+    </div>
+    <a href="" class="button button-rounded">もっと見る</a>
+  </section>
+</article>

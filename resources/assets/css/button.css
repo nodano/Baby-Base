@@ -1,0 +1,35 @@
+.button {
+  display: block;
+  padding: 7px 15px;
+  width: 100%;
+  min-height: 40px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  background-color: red;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+.button:hover {
+  opacity: 0.6;
+}
+
+.button-secondary {
+  border: 1px solid red;
+  color: red;
+  background-color: white;
+}
+
+.button-small {
+  width: fit-content;
+}
+
+.button-rounded {
+  width: fit-content;
+  border: 1px solid red;
+  border-radius: 30px;
+  color: black;
+  background: white;
+}

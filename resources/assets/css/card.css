@@ -1,0 +1,36 @@
+.card-container {
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card-header {
+  position: relative;
+}
+
+.card-header a {
+  display: block;
+}
+
+.card-image {
+  border-radius: 5px;
+}
+
+.card-price {
+  position: absolute;
+  bottom: 10px;
+  padding: 3px;
+  border-radius: 2px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.4);
+  font-weight: bold;
+}
+
+.card-name {
+  margin-top: 8px;
+  height: calc(14px * 1.4 * 2); /** font-size * line-height * 行数 */
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1.4;
+  overflow: hidden;
+}

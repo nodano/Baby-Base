@@ -17,7 +17,7 @@ class WelcomController extends Controller
      */
     $dba = DBAccess::getInstance();
     $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY id DESC LIMIT 5;");
-    $products = $stmt->fetchAll();
+    $latest_products = $stmt->fetchAll();
 
 
     /**
@@ -33,16 +33,16 @@ class WelcomController extends Controller
     // 人気取得(適当に商品一覧を取得する) → ID昇順(仮)
     $dba = DBAccess::getInstance();
     $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY id ASC LIMIT 5;");
-    $products2 = $stmt->fetchAll();
+    $popular_products = $stmt->fetchAll();
 
     // 他(適当に商品一覧を取得する)
     $dba = DBAccess::getInstance();
     $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY rand() ASC LIMIT 5;");
-    $products3 = $stmt->fetchAll();
+    $recommend_products = $stmt->fetchAll();
 
 
 
-    $params = ["products" => $products, 'products2' => $products2, 'products3' => $products3];
+    $params = ["latest_products" => $latest_products, 'popular_products' => $popular_products, 'recommend_products' => $recommend_products];
 
     $this->view("index.php", $params);
   }
