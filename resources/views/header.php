@@ -132,7 +132,7 @@
             <li><a href="<?php echo PUBLIC_URL . "mypage/block" ?>">ブロック</a></li>
             <li><a href="<?php echo PUBLIC_URL . "listing" ?>">出品</a></li>
             <li><a href="<?php echo PUBLIC_URL . "products" ?>">商品一覧</a></li>
-            <li><a href="<?php echo PUBLIC_URL . "products/3" ?>">商品ID: 3の商品詳細</a></li>
+            <li><a href="<?php echo PUBLIC_URL . "products/6" ?>">商品ID: 6の商品詳細</a></li>
             <li><a href="<?php echo PUBLIC_URL . "products/3/update" ?>">商品ID: 3の商品更新</a></li>
-            <li><a href="<?php echo PUBLIC_URL . "transactions/3" ?>">取引ID: 3の取引画面</a></li>
+            <li><a href="<?php echo PUBLIC_URL . "transactions/4" ?>">取引ID: 4の取引画面</a></li>
         </ul>
