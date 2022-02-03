@@ -51,6 +51,14 @@ class UserController extends Controller
     $user_id = $user->getId();
     $params = $this->getUserPageInfo($user_id);
 
+    $dba = DBAccess::getInstance();
+    // 取引中取得
+    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE t.user_id = ? AND t.status < 4 GROUP BY p.id LIMIT 30;", [$user_id]);
+    $params['transaction_products'] = $stmt->fetchAll();
+    // 取引済み取得
+    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE t.user_id = ? AND t.status = 4 GROUP BY p.id LIMIT 30;", [$user_id]);
+    $params['completed_products'] = $stmt->fetchAll();
+
     $this->view("user/index.php", $params);
   }
 
@@ -78,11 +86,6 @@ class UserController extends Controller
     $params = ['user' => $user];
     $this->view("user/info.php", $params);
   }
-
-  /**
-   * TODO: 作成
-   * POST mypage/info/confirm
-   */
 
   /**
    * POST mypage/info
