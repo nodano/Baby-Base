@@ -86,11 +86,11 @@ class AuthController extends Controller
     $sqlEmail = $stmt->fetch();
 
     if ($sqlUsername["count(*)"] != 0) {
-      $this->push("auth/signup?error=username_duplicate");
+      $this->push("auth/signup?error=duplicate");
     }
 
     if ($sqlEmail["count(*)"] != 0) {
-      $this->push("auth/signup?error=email_duplicate");
+      $this->push("auth/signup?error=duplicate");
     }
 
     $this->view("signup/confirm.php");
@@ -120,6 +120,22 @@ class AuthController extends Controller
 
     // 重複確認
     $dba = DBAccess::getInstance();
+
+    $stmt = $dba->query("SELECT count(*) FROM users WHERE username = ?  LIMIT 1;", [$_POST['username']]);
+
+    $sqlUsername = $stmt->fetch();
+
+    $stmt = $dba->query("SELECT count(*) FROM users WHERE email = ? LIMIT 1;", [$_POST['email']]);
+
+    $sqlEmail = $stmt->fetch();
+
+    if ($sqlUsername["count(*)"] != 0) {
+      $this->push("auth/signup?error=duplicate");
+    }
+
+    if ($sqlEmail["count(*)"] != 0) {
+      $this->push("auth/signup?error=duplicate");
+    }
 
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $dba->query("INSERT INTO users (username, password, name, email) VALUES(?, ?, ?, ?);", [$_POST['username'], $hashed_password, $_POST['name'], $_POST['email']]);
