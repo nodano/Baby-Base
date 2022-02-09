@@ -1,10 +1,18 @@
+<?php require_once("transaction_header.php"); ?>
+
 <?php if ($is_seller) : ?>
   <div>
-    <h1>商品の発送を行ってください。</h1>
-    <form action='<?php echo "./${transactions['id']}/send"; ?>' method="post">
-      <input type="submit" value="発送完了">
+
+    <div class="alert">
+      <p>発送を行ってください</p>
+    </div>
+
+    <form action='<?php echo "./${transactions['id']}/send"; ?>' method="post" class="form">
+      <input type="submit" value="発送完了" class="button">
     </form>
   </div>
 <?php else : ?>
-  <h1>出品者の発送待ち中です。</h1>
+  <div class="alert">
+    <p>発送を待っています</p>
+  </div>
 <?php endif; ?>

@@ -42,7 +42,7 @@ class ProductController extends Controller
    */
   public function fetchByID($id)
   {
-    // 値の検証
+    // TODO: 取引状態を取得する
 
     // データベースから商品情報と商品画像を取得
     $dba = DBAccess::getInstance();
@@ -60,7 +60,6 @@ class ProductController extends Controller
       $is_seller = false;
     }
 
-    // TODO: 写真のpathを絶対パスに変更
     $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'is_seller' => $is_seller];
     $this->view("products/index.php", $params);
   }
@@ -80,7 +79,10 @@ class ProductController extends Controller
      * 出品者とログインしている人が同一か?
      */
 
-    $this->view("products/update.php");
+    // 取引中ではない
+    $params = ['id' => $id];
+
+    $this->view("products/update.php", $params);
   }
 
   /**
@@ -98,8 +100,10 @@ class ProductController extends Controller
      * 出品者とログインしている人が同一か?
      */
 
+    // 取引中ではない
+
     // データベースに上書きする
 
-    $this->view("products/${id}");
+    $this->push("products/${id}");
   }
 }
