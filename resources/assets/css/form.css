@@ -35,6 +35,10 @@
   resize: none;
 }
 
+.form-item-input-file {
+  display: none;
+}
+
 
 .form-fieldset {
   margin: 0;
@@ -49,4 +53,10 @@
   margin-bottom: 12px;
   font-size: 1.4rem;
   font-weight: bold;
+}
+
+
+/** 検索フォーム用のデザイン */
+.search-container {
+  display: flex;
 }

@@ -40,8 +40,8 @@
                     <div>
                         <form action="#" method="get" class="form">
                             <div class="search-container">
-                                <input type="text" name="search" id="search" class="form-input search">
-                                <button type="submit" class="search-icon"><i class="fas fa-search"></i></button>
+                                <input type="text" name="search" id="search" class="form-item-input form-item-input-search">
+                                <button type="submit" class="button button-search"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
                     </div>
