@@ -11,6 +11,8 @@
   </div>
 
   <form action="<?php echo "./${transactions['id']}/received"; ?>" method="post" class="form">
-    <input type="submit" value="商品を受け取りました" class="button">
+    <div class="form-item">
+      <input type="submit" value="商品を受け取りました" class="button form-submit">
+    </div>
   </form>
 <?php endif; ?>

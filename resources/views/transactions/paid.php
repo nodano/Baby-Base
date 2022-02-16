@@ -8,7 +8,9 @@
     </div>
 
     <form action='<?php echo "./${transactions['id']}/send"; ?>' method="post" class="form">
-      <input type="submit" value="発送完了" class="button">
+      <div class="form-item">
+        <input type="submit" value="発送完了" class="button form-submit">
+      </div>
     </form>
   </div>
 <?php else : ?>
