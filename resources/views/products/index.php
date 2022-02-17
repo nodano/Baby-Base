@@ -1,5 +1,6 @@
-<div class="product">
+<?php var_dump($product); ?>
 
+<div class="product">
   <div class="product-image-wrap">
     <div class="product-image-main-container">
       <img src="<?php echo ROOT_URL . "/resources/images/main/" . $pictures[0]['path'] ?>" alt="<?php echo $product['name'] ?>の商品画像" class="product-image-main">
@@ -12,17 +13,14 @@
     <div class="product-option">オプション</div>
 
     <div class="product-transaction">
-      <!-- TODO: 取引画面へのリンクを表示する -->
-      <?php if (!$is_seller) : ?>
-        <?php if ($product['status'] === 0) : ?>
-          <form action='<?php echo "../transactions/${id}"; ?>' method="post">
-            <input type="submit" value="購入手続きへ" class="button t-bold">
-          </form>
-        <?php elseif ($product['status'] === 1) : ?>
-          <p>購入した本人なら取引画面へのリンクを表示する</p>
-        <?php else : ?>
-          <p>他のユーザーが取引済み</p>
-        <?php endif; ?>
+      <?php if (!isset($product['transaction_id']) && !$auth['is_login']) : ?>
+        <a href="<?php echo PUBLIC_URL . "auth/login"; ?>" class="button">購入にはログインが必要です</a>
+      <?php elseif (!isset($product['transaction_id']) && $product['seller_id'] !== $user_id) : ?>
+        <form action='<?php echo "../transactions/${id}"; ?>' method="post">
+          <input type="submit" value="購入手続きへ" class="button t-bold">
+        </form>
+      <?php elseif ($product['seller_id'] === $user_id || $product['buyer_id'] === $user_id) : ?>
+        <a href="<?php echo "../transactions/" . $product['transaction_id']; ?>" class="button">取引画面へ</a>
       <?php endif; ?>
     </div>
 

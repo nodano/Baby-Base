@@ -53,7 +53,7 @@ class UserController extends Controller
 
     $dba = DBAccess::getInstance();
     // 取引中取得
-    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE t.user_id = ? AND t.status < 4 GROUP BY p.id LIMIT 30;", [$user_id]);
+    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE (t.user_id = ? OR p.user_id = ?) AND t.status < 4 GROUP BY p.id LIMIT 30;", [$user_id, $user_id]);
     $params['transaction_products'] = $stmt->fetchAll();
     // 取引済み取得
     $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE (t.user_id = ? OR p.user_id = ?) AND t.status = 4 GROUP BY p.id LIMIT 30;", [$user_id, $user_id]);
