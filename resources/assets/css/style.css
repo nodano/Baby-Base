@@ -70,6 +70,26 @@
   text-decoration: underline;
 }
 
+/** 売上確認 */
+.profit {
+  max-width: 620px;
+  margin: 0 auto;
+}
+.profit-item {
+  display: flex;
+  padding: 1rem 0;
+}
+.profit-item:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.profit-item span:first-child {
+  display: inline-block;
+  margin-right: auto;
+}
+.profit-item.profit-total span:last-child {
+  color: #e32b36;
+}
 
 /** 取引画面 情報 */
 .alert {

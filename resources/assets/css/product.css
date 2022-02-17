@@ -8,8 +8,11 @@
 }
 
 .product-image-wrap img {
-  width: 300px;
-  height: auto;
+  display: block;
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
 }
 
 .product-body {
