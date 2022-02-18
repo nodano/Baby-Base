@@ -27,6 +27,7 @@
     <div class="product-description-container">
       <h2 class="product-headline">商品の説明</h2>
       <p class="product-description"><?php echo $product['description']; ?></p>
+      <p class="product-seller"><span>出品者: </span><?php echo $product['username']; ?></p>
     </div>
 
   </div><!-- .product-body -->
