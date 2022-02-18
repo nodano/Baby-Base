@@ -24,9 +24,40 @@ class ProductController extends Controller
     } else {
       $search = "";
     }
+
     // データベースから、商品の一覧を取得する
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? LIMIT 30;", ["%$search%", "%$search%"]);
+
+    if (isset($_GET['sort'])) {
+      switch ($_GET['sort']) {
+        case "priceDesc":
+          //高い→安い
+          $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? ORDER BY price DESC LIMIT 30;", ["%$search%", "%$search%"]);
+          break;
+
+        case "priceAsc":
+          //安い→高い
+          $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? ORDER BY price ASC LIMIT 30;", ["%$search%", "%$search%"]);
+          break;
+
+        case "idDesc":
+          //ID高い→低い(新着順)
+          $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? ORDER BY products.id DESC LIMIT 30;", ["%$search%", "%$search%"]);
+          break;
+
+        case "idAsc":
+          //ID低い→高い(古い順)
+          $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? ORDER BY products.id ASC LIMIT 30;", ["%$search%", "%$search%"]);
+          break;
+
+        default:
+          $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? LIMIT 30;", ["%$search%", "%$search%"]);
+          break;
+      }
+    } else {
+      $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE name LIKE ? || description LIKE ? LIMIT 30;", ["%$search%", "%$search%"]);
+    }
+
 
     $products = $stmt->fetchAll();
 
