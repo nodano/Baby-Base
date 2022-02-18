@@ -33,7 +33,8 @@
       <label for="picture">商品画像（最大5枚）: </label>
     </div>
     <div class="form-item-control">
-      <input type="file" name="picture[]" id="picture" multiple required>
+      <input type="file" name="picture[]" id="picture" class="form-item-input form-item-input-file" multiple required>
+      <label for="picture" class="button button-secondary button-file">画像を選択</label>
     </div>
   </div>
 

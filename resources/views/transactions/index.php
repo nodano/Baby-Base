@@ -1,10 +1,21 @@
+<?php require_once("transaction_header.php"); ?>
+
 <?php if ($is_seller) : ?>
-  <h1>買い手の支払いが完了していません。</h1>
+  <div class="alert">
+    <p>取引相手の支払いが完了していません</p>
+  </div>
 <?php else : ?>
-  <h1>支払いが完了していません。</h1>
-  <div>
-    <p>商品名: </p>
-    <p>値段: </p>
+
+  <div class="alert">
+    <p>購入手続きを行ってください</p>
+  </div>
+
+
+  <div class="transaction">
+    <p class="transaction-headline">支払い情報</p>
+    <div class="transaction-info">
+      <p><span>商品代金:</span> &yen;<?php echo number_format($product['price']); ?></p>
+    </div>
   </div>
   <form action='<?php echo "./${transactions['id']}/payments"; ?>' method="post" class="form">
 

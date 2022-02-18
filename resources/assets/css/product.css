@@ -1,0 +1,49 @@
+.product {
+  display: flex;
+}
+
+.product-image-wrap {
+  width: 60%;
+  margin-right: auto;
+}
+
+.product-image-wrap img {
+  display: block;
+  margin: 0 auto;
+  width: 400px;
+  height: 400px;
+  object-fit: contain;
+}
+
+.product-body {
+  width: 35%;
+}
+
+.product-name {
+  font-size: 24px;
+}
+
+.product-headline {
+  font-size: 20px;
+  color: #666;
+}
+
+.product-price {
+  margin: 0 0 1rem 0;
+}
+.product-price span {
+  font-size: 24px;
+  color: #e32b36;
+}
+
+.product-option {
+  margin-bottom: 1.4rem;
+}
+
+.product-transaction {
+  margin-bottom: 1.4rem;
+}
+
+.product-description-container {}
+
+.product-description {}

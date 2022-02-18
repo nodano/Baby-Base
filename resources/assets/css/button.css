@@ -33,3 +33,19 @@
   color: black;
   background: white;
 }
+
+.button-search {
+  width: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.button-search i {
+  font-size: 1.4rem;
+}
+
+.button-file {
+  margin: 0 auto;
+  padding-left: 60px;
+  padding-right: 60px;
+  width: fit-content;
+}

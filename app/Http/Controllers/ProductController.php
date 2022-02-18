@@ -73,11 +73,17 @@ class ProductController extends Controller
    */
   public function fetchByID($id)
   {
-    // 値の検証
+    /**
+     * 取引中ではない かつ ログインしていない -> ログインボタン
+     * 取引中ではない かつ 売り手ではない -> 購入ボタン
+     * 売り手　もしくは　買い手 -> 取引先ボタン
+     * それいがい
+     */
 
     // データベースから商品情報と商品画像を取得
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT * FROM products WHERE id = ? LIMIT 1;", [$id]);
+    // $stmt = $dba->query("SELECT * FROM products WHERE id = ? LIMIT 1;", [$id]);
+    $stmt = $dba->query("SELECT p.name, p.price, p.description, p.user_id AS seller_id, t.user_id AS buyer_id, t.id AS transaction_id, username FROM products AS p LEFT OUTER JOIN transactions AS t ON p.id = t.product_id LEFT OUTER JOIN users AS u ON u.id = p.user_id WHERE p.id = ? LIMIT 1;", [$id]);
     $product = $stmt->fetch();
 
     $stmt = $dba->query("SELECT * FROM pictures WHERE product_id = ?;", [$id]);
@@ -86,13 +92,11 @@ class ProductController extends Controller
     if ($this->auth->check()) {
       $user = $this->auth->getUser();
       $user_id = $user->getId();
-      $is_seller = $product['user_id'] === $user_id;
     } else {
-      $is_seller = false;
+      $user_id = -100;
     }
 
-    // TODO: 写真のpathを絶対パスに変更
-    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'is_seller' => $is_seller];
+    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'user_id' => $user_id];
     $this->view("products/index.php", $params);
   }
 
@@ -111,7 +115,10 @@ class ProductController extends Controller
      * 出品者とログインしている人が同一か?
      */
 
-    $this->view("products/update.php");
+    // 取引中ではない
+    $params = ['id' => $id];
+
+    $this->view("products/update.php", $params);
   }
 
   /**
@@ -129,8 +136,10 @@ class ProductController extends Controller
      * 出品者とログインしている人が同一か?
      */
 
+    // 取引中ではない
+
     // データベースに上書きする
 
-    $this->view("products/${id}");
+    $this->push("products/${id}");
   }
 }

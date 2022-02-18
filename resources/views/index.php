@@ -13,7 +13,6 @@
         <div class="card">
           <div class="card-header">
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
-              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
             <div class="card-price">&yen;<?php echo $product['price']; ?></div>
@@ -38,7 +37,6 @@
         <div class="card">
           <div class="card-header">
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
-              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
             <div class="card-price">&yen;<?php echo $product['price']; ?></div>
@@ -62,7 +60,6 @@
         <div class="card">
           <div class="card-header">
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
-              <!-- TODO: 画像幅が異なる時&画像がない時の処理 -->
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
             <div class="card-price">&yen;<?php echo $product['price']; ?></div>

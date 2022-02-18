@@ -1,7 +1,7 @@
 .hamburger {
   position: relative;
-  width: 44px;
-  height: 32px;
+  width: 30px;
+  height: 25px;
   cursor: pointer;
   z-index: 9999;
 }
@@ -19,7 +19,7 @@
   top: 0;
 }
 .hamburger span:nth-child(2) {
-  top: 14px;
+  top: 11px;
 }
 .hamburger span:nth-child(3) {
   bottom: 0;
@@ -28,9 +28,11 @@
 .hamburger-menu {
   position: fixed;
   top: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 0 1rem;
   width: 50%;
   max-width: 620px;
   height: 100vh;
@@ -40,9 +42,13 @@
   z-index: 2000;
 }
 
+.hamburger-menu > div:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
 /** オープン時の動き */
 .is-open .hamburger span:nth-child(1) {
-  transform: rotate(45deg) translate(8px, 11px);
+  transform: rotate(45deg) translate(7px, 7px);
 }
 
 .is-open .hamburger span:nth-child(2) {
@@ -50,7 +56,7 @@
 }
 
 .is-open .hamburger span:nth-child(3) {
-  transform: rotate(-45deg) translate(9px, -12px);
+  transform: rotate(-45deg) translate(7px, -8px);
 }
 
 .is-open .hamburger-menu {

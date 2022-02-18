@@ -22,12 +22,6 @@
 </head>
 
 <body>
-
-    <?php
-    // echo "↓ header.php <br><pre>";
-    // var_dump($_SESSION);
-    // echo "</pre><br>";
-    ?>
     <header class="header">
         <div class="header-bar">
             <div class="header-hamburger-container hamburger-container">
@@ -40,8 +34,8 @@
                     <div>
                         <form action="#" method="get" class="form">
                             <div class="search-container">
-                                <input type="text" name="search" id="search" class="form-input search">
-                                <button type="submit" class="search-icon">送信アイコン</button>
+                                <input type="text" name="search" id="search" class="form-item-input form-item-input-search">
+                                <button type="submit" class="button button-search"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
                     </div>
@@ -96,6 +90,9 @@
             <nav class="header-navigation">
                 <ul class="header-navigation-list">
                     <?php if ($auth['is_login']) : ?>
+                        <li class="header-navigation-item">
+                            <a href="<?php echo PUBLIC_URL . "mypage" ?>" class="header-navigation-link">マイページ</a>
+                        </li>
                         <li class="header-navigation-item">
                             <a href="<?php echo PUBLIC_URL . "auth/logout" ?>" class="header-navigation-link">ログアウト</a>
                         </li>
