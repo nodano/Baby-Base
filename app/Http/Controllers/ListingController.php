@@ -48,23 +48,23 @@ class ListingController extends Controller
     $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
-      $this->push("listing");
+      $this->push("listing?error=blank");
     }
 
     if ($validate->valideteWordCount($name, 1, 30) == false) {
-      $this->push("listing");
+      $this->push("listing?error=name_length");
     }
 
-    if ($validate->valideteWordCount($description, 1, 300) == false) {
-      $this->push("listing");
+    if ($validate->valideteWordCount($description, 0, 300) == false) {
+      $this->push("listing?error=description_length");
     }
 
     if (is_numeric($price) == false) {
-      $this->push("listing");
+      $this->push("listing?error=price_format");
     }
 
     if ($validate->validateInt($price, 100, 300000) == false) {
-      $this->push("listing");
+      $this->push("listing?error=price_value");
     }
 
     // 入力チェック
@@ -149,23 +149,23 @@ class ListingController extends Controller
     $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
-      $this->push("listing");
+      $this->push("listing?error=blank");
     }
 
     if ($validate->valideteWordCount($name, 1, 30) == false) {
-      $this->push("listing");
+      $this->push("listing?error=name_length");
     }
 
-    if ($validate->valideteWordCount($description, 1, 300) == false) {
-      $this->push("listing");
+    if ($validate->valideteWordCount($description, 0, 300) == false) {
+      $this->push("listing?error=description_length");
     }
 
     if (is_numeric($price) == false) {
-      $this->push("listing");
+      $this->push("listing?error=price_format");
     }
 
     if ($validate->validateInt($price, 100, 300000) == false) {
-      $this->push("listing");
+      $this->push("listing?error=price_value");
     }
 
     $upload_files = []; // メインディレクトリに移動できた画像の配列
