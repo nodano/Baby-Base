@@ -2,6 +2,10 @@
 
   <form action="" method="POST" class="form">
 
+    <?php if (isset($_GET['error'])) : ?>
+      <p class="form-error"><?php echo $_GET['error']; ?></p>
+    <?php endif; ?>
+
     <div class="form-item">
       <div class="form-item-label">
         <label for="login">ユーザー名またはメールアドレス: </label>

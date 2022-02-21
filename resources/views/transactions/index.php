@@ -19,6 +19,10 @@
   </div>
   <form action='<?php echo "./${transactions['id']}/payments"; ?>' method="post" class="form">
 
+    <?php if (isset($_GET['error'])) : ?>
+      <p class="form-error"><?php echo $_GET['error']; ?></p>
+    <?php endif; ?>
+
     <fieldset class="form-fieldset">
       <legend class="form-fieldset-legend">決済</legend>
 

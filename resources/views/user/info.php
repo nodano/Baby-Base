@@ -2,6 +2,10 @@
 
 <form action="info" method="post" class="form">
 
+  <?php if (isset($_GET['error'])) : ?>
+    <p class="form-error"><?php echo $_GET['error']; ?></p>
+  <?php endif; ?>
+
   <div class="form-item">
     <div class="form-item-label">
       <label for="name">氏名: </label>
@@ -9,6 +13,7 @@
     <div class="form-item-control">
       <input type="text" name="name" id="name" class="form-item-input" value="<?php echo $user['name']; ?>" required>
     </div>
+    <p class="form-helper-text">※氏名を半角スペースなしで入力してください</p>
   </div>
 
   <div class="form-item">
@@ -18,6 +23,7 @@
     <div class="form-item-control">
       <input type="text" name="username" id="username" class="form-item-input" value="<?php echo $user['username']; ?>" required>
     </div>
+    <p class="form-helper-text">※2文字以上8文字以内で入力してください</p>
   </div>
 
   <div class="form-item">
@@ -36,6 +42,7 @@
     <div class="form-item-control">
       <input type="password" name="password" id="password" class="form-item-input" required>
     </div>
+    <p class="form-helper-text">※2文字以上8文字以内で入力してください</p>
   </div>
 
   <div class="form-item">

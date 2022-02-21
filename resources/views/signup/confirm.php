@@ -2,6 +2,10 @@
 <form action="../signup" method="post" class="form">
   <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
 
+  <?php if (isset($_GET['error'])) : ?>
+    <p class="form-error"><?php echo $_GET['error']; ?></p>
+  <?php endif; ?>
+
   <div class="form-item">
     <div class="form-item-label">
       <label for="name">氏名: </label>

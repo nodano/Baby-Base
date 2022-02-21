@@ -8,7 +8,11 @@ $files_count = count($files);
 
 <h1>出品内容の確認</h1>
 <form action="../listing" method="POST" class="form">
-  <p>商品画像は後から変更することができません</p>
+  <p>後から画像を変更することはできません</p>
+
+  <?php if (isset($_GET['error'])) : ?>
+    <p class="form-error"><?php echo $_GET['error']; ?></p>
+  <?php endif; ?>
 
   <div class="form-item">
     <div class="form-item-label">
