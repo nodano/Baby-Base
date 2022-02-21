@@ -10,6 +10,10 @@
     </select>
     <input type="submit" value="送信">
 </form>
+<form action="" method="get">
+    <input type="text" name="search">
+    <input type="submit" value="検索">
+</form>
 <pre>
 <?php
 var_dump($products);

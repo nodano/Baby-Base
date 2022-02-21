@@ -16,7 +16,15 @@ class WelcomController extends Controller
      * ・登録された興味のあるカテゴリと一致するproductsをおすすめに表示する
      */
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY id DESC LIMIT 5;");
+    $stmt = $dba->query("SELECT products.id,name,price,status,path, 
+      CASE 
+        WHEN path LIKE '%0.png' THEN 'TOP'
+        ELSE 'NO' 
+        END 
+      FROM products INNER JOIN pictures ON products.id = pictures.product_id WHERE 
+      (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END)
+       = 'TOP' 
+      ORDER BY id DESC LIMIT 5;");
     $latest_products = $stmt->fetchAll();
 
 
@@ -32,12 +40,28 @@ class WelcomController extends Controller
 
     // 人気取得(適当に商品一覧を取得する) → ID昇順(仮)
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY id ASC LIMIT 5;");
+    $stmt = $dba->query("SELECT products.id,name,price,status,path, 
+    CASE 
+      WHEN path LIKE '%0.png' THEN 'TOP'
+      ELSE 'NO' 
+      END 
+    FROM products INNER JOIN pictures ON products.id = pictures.product_id WHERE 
+    (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END)
+     = 'TOP' 
+    ORDER BY id ASC LIMIT 5;");
     $popular_products = $stmt->fetchAll();
 
     // 他(適当に商品一覧を取得する)
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT distinct products.id,name,price,status,path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id ORDER BY rand() ASC LIMIT 5;");
+    $stmt = $dba->query("SELECT products.id,name,price,status,path, 
+    CASE 
+      WHEN path LIKE '%0.png' THEN 'TOP'
+      ELSE 'NO' 
+      END 
+    FROM products INNER JOIN pictures ON products.id = pictures.product_id WHERE 
+    (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END)
+     = 'TOP' 
+    ORDER BY rand() ASC LIMIT 5;");
     $recommend_products = $stmt->fetchAll();
 
 
