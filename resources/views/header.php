@@ -90,7 +90,7 @@
 
             <nav class="header-navigation">
                 <ul class="header-navigation-list">
-                    <?php if ($auth['is_login']) : ?>
+                    <?php if (isset($auth) && $auth['is_login']) : ?>
                         <li class="header-navigation-item">
                             <a href="<?php echo PUBLIC_URL . "mypage" ?>" class="header-navigation-link">マイページ</a>
                         </li>
