@@ -4,6 +4,7 @@ namespace Http\Controllers;
 
 use Database\DBAccess;
 use Http\Controllers\Controller;
+use Validate;
 
 class ProductController extends Controller
 {
@@ -74,6 +75,8 @@ class ProductController extends Controller
   public function fetchByID($id)
   {
     /**
+     * 取引中ではない かつ 出品者 -> 商品情報の更新リンク
+     * 
      * 取引中ではない かつ ログインしていない -> ログイン必要ボタン
      * 取引中ではない かつ 出品者 -> 購入者を待っているボタン
      * 取引中ではない かつ 出品者ではない -> 購入手続きボタン
@@ -111,14 +114,24 @@ class ProductController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    /**
-     * 本人確認
-     * 
-     * 出品者とログインしている人が同一か?
-     */
+
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT name, price, description, status, user_id FROM products WHERE id = ? LIMIT 1;", [$id]);
+    $product = $stmt->fetch();
+
+    // 出品者本人か確認
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+    if ($user_id !== $product['user_id']) {
+      $this->push("products/${id}?error=identification");
+    }
 
     // 取引中ではない
-    $params = ['id' => $id];
+    if ($product['status'] !== 0) {
+      $this->push("products/${id}?error=already");
+    }
+
+    $params = ['id' => $id, 'product' => $product];
 
     $this->view("products/update.php", $params);
   }
@@ -134,15 +147,52 @@ class ProductController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    /**
-     * 本人確認
-     * 
-     * 出品者とログインしている人が同一か?
-     */
+
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT status, user_id FROM products WHERE id = ? LIMIT 1;", [$id]);
+    $product = $stmt->fetch();
+
+    // 出品者本人か確認
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+    if ($user_id !== $product['user_id']) {
+      $this->push("products/${id}?error=identification");
+    }
 
     // 取引中ではない
+    if ($product['status'] !== 0) {
+      $this->push("products/${id}?error=already");
+    }
 
-    // データベースに上書きする
+    // 商品情報のバリデート
+    $validate = new Validate;
+
+    $name         = $validate->escape($_POST['name']);
+    $description  = $validate->escape($_POST['description']);
+    $price        = $validate->validateTrim($_POST['price']);
+
+    if ($name == false || $description == false || $price == false) {
+      $this->push("products/${id}/update?error=blank");
+    }
+
+    if ($validate->valideteWordCount($name, 1, 30) == false) {
+      $this->push("products/${id}/update?error=name_length");
+    }
+
+    if ($validate->valideteWordCount($description, 0, 300) == false) {
+      $this->push("products/${id}/update?error=description_length");
+    }
+
+    if (is_numeric($price) == false) {
+      $this->push("products/${id}/update?error=price_format");
+    }
+
+    if ($validate->validateInt($price, 100, 300000) == false) {
+      $this->push("products/${id}/update?error=price_value");
+    }
+
+    // データベースの上書き
+    $dba->query("UPDATE products SET name = ?, description = ?, price = ? WHERE id = ? LIMIT 1;", [$name, $description, $price, $id]);
 
     $this->push("products/${id}");
   }

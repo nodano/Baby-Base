@@ -8,14 +8,18 @@ $files_count = count($files);
 
 <h1>出品内容の確認</h1>
 <form action="../listing" method="POST" class="form">
-  <p>商品画像は後から変更することができません</p>
+  <p>後から画像を変更することはできません</p>
+
+  <?php if (isset($_GET['error'])) : ?>
+    <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
+  <?php endif; ?>
 
   <div class="form-item">
     <div class="form-item-label">
       <label for="name">商品名</label>
     </div>
     <div class="form-item-control">
-      <input type="text" name="name" id="name" value="<?php echo $_POST['name']; ?>" class="form-item-input" readonly required>
+      <input type="text" name="name" id="name" value="<?php echo Util::h($_POST['name']); ?>" class="form-item-input" readonly required>
     </div>
   </div>
 
@@ -24,7 +28,7 @@ $files_count = count($files);
       <label for="description">商品説明</label>
     </div>
     <div class="form-item-control">
-      <textarea name="description" id="description" class="form-item-input form-item-input-textarea" cols="30" rows="10" readonly required><?php echo $_POST['description']; ?></textarea>
+      <textarea name="description" id="description" class="form-item-input form-item-input-textarea" cols="30" rows="10" readonly required><?php echo Util::h($_POST['description']); ?></textarea>
     </div>
   </div>
 
@@ -33,13 +37,13 @@ $files_count = count($files);
       <label for="price">値段</label>
     </div>
     <div class="form-item-control">
-      <input type="number" name="price" id="price" class="form-item-input" min="100" max="300000" value="<?php echo $_POST['price']; ?>" readonly required>
+      <input type="number" name="price" id="price" class="form-item-input" min="100" max="300000" value="<?php echo Util::h($_POST['price']); ?>" readonly required>
     </div>
   </div>
 
   <?php if ($files_count > 0) : ?>
     <?php for ($i = 0; $i < $files_count; $i++) : ?>
-      <input type="hidden" name="files[]" value="<?php echo $files[$i]['name']; ?>">
+      <input type="hidden" name="files[]" value="<?php echo Util::h($files[$i]['name']); ?>">
     <?php endfor; ?>
 
     <div class="form-item">
@@ -47,7 +51,7 @@ $files_count = count($files);
       <div class="l-flex">
         <?php for ($i = 0; $i < $files_count; $i++) : ?>
           <div class="w-5">
-            <img src="<?php echo $files[$i]['path']; ?>" alt="出品画像 その<?php echo $i; ?>">
+            <img src="<?php echo Util::h($files[$i]['path']); ?>" alt="出品画像 その<?php echo Util::h($i); ?>">
           </div>
         <?php endfor; ?>
       </div>

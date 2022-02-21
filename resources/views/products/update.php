@@ -1,13 +1,18 @@
 <h1>出品情報更新</h1>
 <form action="" method="post" class="form">
 
+  <?php if (isset($_GET['error'])) : ?>
+    <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
+  <?php endif; ?>
+
   <div class="form-item">
     <div class="form-item-label">
       <label for="name">商品名: </label>
     </div>
     <div class="form-item-control">
-      <input type="text" name="name" id="name" class="form-item-input" required>
+      <input type="text" name="name" id="name" class="form-item-input" value="<?php echo Util::h($product['name']); ?>" required>
     </div>
+    <p class="form-helper-text">※30文字以内で入力してください</p>
   </div>
 
   <div class="form-item">
@@ -15,8 +20,9 @@
       <label for="description">商品説明: </label>
     </div>
     <div class="form-item-control">
-      <textarea name="description" id="description" cols="30" rows="10" class="form-item-input form-item-input-textarea" required></textarea>
+      <textarea name="description" id="description" cols="30" rows="10" class="form-item-input form-item-input-textarea" required><?php echo Util::h($product['description']); ?></textarea>
     </div>
+    <p class="form-helper-text">※300文字以内で入力してください</p>
   </div>
 
   <div class="form-item">
@@ -24,8 +30,9 @@
       <label for="price">値段: </label>
     </div>
     <div class="form-item-control">
-      <input type="number" name="price" id="price" min="100" max="300000" class="form-item-input" required>
+      <input type="number" name="price" id="price" min="100" max="300000" class="form-item-input" value="<?php echo Util::h($product['price']); ?>" required>
     </div>
+    <p class="form-helper-text">※100円以上300,000円以内で入力してください</p>
   </div>
 
   <div class="form-item">
