@@ -74,15 +74,15 @@ class ProductController extends Controller
   public function fetchByID($id)
   {
     /**
-     * 取引中ではない かつ ログインしていない -> ログインボタン
-     * 取引中ではない かつ 売り手ではない -> 購入ボタン
-     * 売り手　もしくは　買い手 -> 取引先ボタン
-     * それいがい
+     * 取引中ではない かつ ログインしていない -> ログイン必要ボタン
+     * 取引中ではない かつ 出品者 -> 購入者を待っているボタン
+     * 取引中ではない かつ 出品者ではない -> 購入手続きボタン
+     * 取引中 かつ 購入者または出品者 -> 取引遷移ボタン
+     * それ以外ならば 取引中 かつ 購入者または出品者ではない -> 売り切れボタン
      */
 
     // データベースから商品情報と商品画像を取得
     $dba = DBAccess::getInstance();
-    // $stmt = $dba->query("SELECT * FROM products WHERE id = ? LIMIT 1;", [$id]);
     $stmt = $dba->query("SELECT p.name, p.price, p.description, p.user_id AS seller_id, t.user_id AS buyer_id, t.id AS transaction_id, username FROM products AS p LEFT OUTER JOIN transactions AS t ON p.id = t.product_id LEFT OUTER JOIN users AS u ON u.id = p.user_id WHERE p.id = ? LIMIT 1;", [$id]);
     $product = $stmt->fetch();
 
@@ -108,7 +108,9 @@ class ProductController extends Controller
   public function renderUpdate($id)
   {
     // ログイン確認
-
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     /**
      * 本人確認
      * 
@@ -129,7 +131,9 @@ class ProductController extends Controller
   public function update($id)
   {
     // ログイン確認
-
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
     /**
      * 本人確認
      * 

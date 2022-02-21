@@ -15,7 +15,7 @@
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
-            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+            <div class="card-price">&yen;<?php echo number_format($product['price']); ?></div>
           </div>
           <div class="card-body"><?php echo $product['name']; ?></div>
         </div>
@@ -25,7 +25,7 @@
 
     </div>
 
-    <a href="" class="button button-rounded">もっと見る</a>
+    <a href="<?php echo PUBLIC_URL . "products" ?>" class="button button-rounded">もっと見る</a>
   </section>
   <section>
     <h2 class="section-title">人気アイテム</h2>
@@ -39,7 +39,7 @@
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
-            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+            <div class="card-price">&yen;<?php echo number_format($product['price']); ?></div>
           </div>
           <div class="card-body"><?php echo $product['name']; ?></div>
         </div>
@@ -48,7 +48,7 @@
       ?>
 
     </div>
-    <a href="" class="button button-rounded">もっと見る</a>
+    <a href="<?php echo PUBLIC_URL . "products" ?>" class="button button-rounded">もっと見る</a>
   </section>
   <section>
     <h2 class="section-title">おすすめアイテム</h2>
@@ -62,7 +62,7 @@
             <a href="<?php echo PUBLIC_URL . 'products/' . $product['id']; ?>">
               <img src="<?php echo ROOT_URL . 'resources/images/main/' . $product['path']; ?>" alt="<?php echo $product['name']; ?> サムネイル画像" class="card-image">
             </a>
-            <div class="card-price">&yen;<?php echo $product['price']; ?></div>
+            <div class="card-price">&yen;<?php echo number_format($product['price']); ?></div>
           </div>
           <div class="card-body"><?php echo $product['name']; ?></div>
         </div>
@@ -71,6 +71,6 @@
       ?>
 
     </div>
-    <a href="" class="button button-rounded">もっと見る</a>
+    <a href="<?php echo PUBLIC_URL . "products" ?>" class="button button-rounded">もっと見る</a>
   </section>
 </article>

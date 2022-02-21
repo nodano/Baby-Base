@@ -19,6 +19,7 @@
     <title>Baby-Base</title>
     <link rel="stylesheet" href="<?php echo ASSETS_URL . 'css/style.css'; ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" href="<?php echo ASSETS_URL . "images/favicon.ico" ?>">
 </head>
 
 <body>
@@ -32,7 +33,7 @@
                 </div>
                 <nav class="hamburger-menu">
                     <div>
-                        <form action="#" method="get" class="form">
+                        <form action="<?php echo PUBLIC_URL . "products" ?>" method="get" class="form">
                             <div class="search-container">
                                 <input type="text" name="search" id="search" class="form-item-input form-item-input-search">
                                 <button type="submit" class="button button-search"><i class="fas fa-search"></i></button>

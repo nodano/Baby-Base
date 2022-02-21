@@ -49,3 +49,13 @@
   padding-right: 60px;
   width: fit-content;
 }
+
+
+.button-disable {
+  color: #666;
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+.button-disable:hover {
+  opacity: 1 !important;
+}

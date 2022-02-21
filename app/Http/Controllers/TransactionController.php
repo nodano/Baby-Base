@@ -120,8 +120,6 @@ class TransactionController extends Controller
       $this->push("auth/login");
     }
 
-    // TODO: 入力値の検証
-
     $dba = DBAccess::getInstance();
 
     $user = $this->auth->getUser();
@@ -211,9 +209,14 @@ class TransactionController extends Controller
       $this->push("transactions/${id}");
     } else {
 
-      // TODO: 全ページ共通のSQL値を入手する
+      // headerに必要な情報を入手
+      $stmt = $dba->query("SELECT id, product_id, user_id, purchase_date, status FROM transactions WHERE id = ? LIMIT 1;", [$id]);
+      $transactions = $stmt->fetch();
 
-      $this->view("transactions/delivery.php", ['status' => $time_diff]);
+      $stmt = $dba->query("SELECT id, name, price, user_id FROM products WHERE id = ? LIMIT 1;", [$transactions['product_id']]);
+      $product = $stmt->fetch();
+
+      $this->view("transactions/delivery.php", ['product' => $product, 'transactions' => $transactions, 'status' => $time_diff]);
     }
   }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @param array | null $files 保存したい画像集
  */
@@ -7,6 +8,7 @@ $files_count = count($files);
 
 <h1>出品内容の確認</h1>
 <form action="../listing" method="POST" class="form">
+  <p>商品画像は後から変更することができません</p>
 
   <div class="form-item">
     <div class="form-item-label">

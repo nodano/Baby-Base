@@ -1,5 +1,4 @@
 <h1>会員登録 入力内容の確認</h1>
-<p>入力内容は~~~</p>
 <form action="../signup" method="post" class="form">
   <input type="hidden" name="password" value="<?php echo $_POST['password']; ?>">
 
