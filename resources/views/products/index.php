@@ -8,7 +8,11 @@
   <div class="product-body">
     <h1 class="product-name"><?php echo $product['name']; ?></h1>
     <p class="product-price"><span>&yen;<?php echo number_format($product['price']); ?></span> (税込) 送料込み</p>
-    <div class="product-option">オプション</div>
+    <div class="product-option">
+      <?php if (!isset($product['transaction_id']) && $product['seller_id'] === $user_id) : ?>
+        <a href="<?php echo "${id}/update"; ?>">商品情報の更新</a>
+      <?php endif; ?>
+    </div>
 
     <div class="product-transaction">
       <?php if (!isset($product['transaction_id']) && !$auth['is_login']) : ?>
@@ -30,7 +34,7 @@
       <h2 class="product-headline">出品者</h2>
       <p><?php echo $product['username']; ?></p>
       <h2 class="product-headline">商品の説明</h2>
-      <p class="product-description"><?php echo $product['description']; ?></p>
+      <p class="product-description"><?php echo nl2br($product['description']); ?></p>
     </div>
 
   </div><!-- .product-body -->
