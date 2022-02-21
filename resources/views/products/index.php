@@ -34,7 +34,7 @@
       <h2 class="product-headline">出品者</h2>
       <p><?php echo Util::h($product['username']); ?></p>
       <h2 class="product-headline">商品の説明</h2>
-      <p class="product-description"><?php echo Util::h(nl2br($product['description'])); ?></p>
+      <p class="product-description"><?php echo nl2br(Util::h($product['description'])); ?></p>
     </div>
 
   </div><!-- .product-body -->
