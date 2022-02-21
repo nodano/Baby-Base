@@ -2,7 +2,7 @@
 <form action="listing/confirm" method="post" enctype="multipart/form-data" class="form">
 
   <?php if (isset($_GET['error'])) : ?>
-    <p class="form-error"><?php echo $_GET['error']; ?></p>
+    <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
   <?php endif; ?>
 
   <div class="form-item">
