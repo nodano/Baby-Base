@@ -1,5 +1,6 @@
 <h1>商品一覧</h1>
 <form action="" method="get">
+      <input type="text" name="search">
   <select name="sort">
     <option value="">選択してください</option>
     <option value="priceDesc">価格高い順</option>
