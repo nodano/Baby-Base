@@ -33,11 +33,18 @@ if ($match !== false) {
   if (is_callable($match['target'])) {
     $match['target']();
   } else {
-    $params = explode("::", $match['target']);
-    $action = new $params[0]();
-    call_user_func_array(array($action, $params[1]), $match['params']);
+    try {
+      $params = explode("::", $match['target']);
+      $action = new $params[0]();
+      call_user_func_array(array($action, $params[1]), $match['params']);
+    } catch (Exception $e) {
+      require_once ROOT . "/resources/views/header.php";
+      require_once ROOT . "/resources/views/error.php";
+      require_once ROOT . "/resources/views/footer.php";
+    }
   }
 } else {
+  require_once ROOT . "/resources/views/header.php";
   require_once ROOT . "/resources/views/404.php";
-  // header($_SERVER["SERVER_PROTOCOL"] . ' 404 Not Found');
+  require_once ROOT . "/resources/views/footer.php";
 }

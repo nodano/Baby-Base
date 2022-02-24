@@ -51,6 +51,16 @@ class UserController extends Controller
     $user_id = $user->getId();
     $params = $this->getUserPageInfo($user_id);
 
+    $dba = DBAccess::getInstance();
+
+    // 取引が終わっていない かつ 購入者または出品者 の商品取得
+    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE (t.user_id = ? OR p.user_id = ?) AND t.status < 4 GROUP BY p.id LIMIT 30;", [$user_id, $user_id]);
+    $params['transaction_products'] = $stmt->fetchAll();
+
+    // 取引が終わっている かつ 購入者または出品者 の商品取得
+    $stmt = $dba->query("SELECT DISTINCT t.id AS id, p.name, p.price, p.status, pic.path FROM transactions AS t LEFT OUTER JOIN products AS p ON t.product_id = p.id LEFT OUTER JOIN pictures AS pic ON p.id = pic.product_id WHERE (t.user_id = ? OR p.user_id = ?) AND t.status = 4 GROUP BY p.id LIMIT 30;", [$user_id, $user_id]);
+    $params['completed_products'] = $stmt->fetchAll();
+
     $this->view("user/index.php", $params);
   }
 
@@ -78,11 +88,6 @@ class UserController extends Controller
     $params = ['user' => $user];
     $this->view("user/info.php", $params);
   }
-
-  /**
-   * TODO: 作成
-   * POST mypage/info/confirm
-   */
 
   /**
    * POST mypage/info
@@ -134,7 +139,12 @@ class UserController extends Controller
     $stmt = $dba->query("SELECT transfers.amount, products.name FROM transfers LEFT OUTER JOIN transactions ON transfers.transaction_id = transactions.id LEFT OUTER JOIN products ON transactions.product_id = products.id WHERE transactions.user_id = ?;", [$user_id]);
     $transfers = $stmt->fetchAll();
 
-    $params = ['transfers' => $transfers];
+    $total = 0;
+    foreach ($transfers as $transfer) {
+      $total += $transfer['amount'];
+    }
+
+    $params = ['transfers' => $transfers, 'total' => $total];
     $this->view("user/profit.php", $params);
   }
 
@@ -183,8 +193,8 @@ class UserController extends Controller
     $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
     $user = $stmt->fetch();
 
-    // テーブルから出品した商品を取得
-    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
+    // テーブルから出品した商品をすべて取得
+    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, products.status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
     $products = $stmt->fetchAll();
 
     return ['user' => $user, 'products' => $products];

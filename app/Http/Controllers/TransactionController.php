@@ -34,12 +34,6 @@ class TransactionController extends Controller
     $stmt = $dba->query("SELECT id, name, price, user_id FROM products WHERE id = ? LIMIT 1;", [$transactions['product_id']]);
     $product = $stmt->fetch();
 
-    // TODO: 不要になったら消す
-    echo "<pre>";
-    var_dump($transactions);
-    var_dump($product);
-    echo "</pre>";
-
     $user = $this->auth->getUser();
     $user_id = $user->getId();
     $is_seller = $product['user_id'] === $user_id;
@@ -125,8 +119,6 @@ class TransactionController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-
-    // TODO: 入力値の検証
 
     $dba = DBAccess::getInstance();
 
@@ -216,7 +208,15 @@ class TransactionController extends Controller
       // 取引画面に遷移
       $this->push("transactions/${id}");
     } else {
-      $this->view("transactions/delivery.php", ['status' => $time_diff]);
+
+      // headerに必要な情報を入手
+      $stmt = $dba->query("SELECT id, product_id, user_id, purchase_date, status FROM transactions WHERE id = ? LIMIT 1;", [$id]);
+      $transactions = $stmt->fetch();
+
+      $stmt = $dba->query("SELECT id, name, price, user_id FROM products WHERE id = ? LIMIT 1;", [$transactions['product_id']]);
+      $product = $stmt->fetch();
+
+      $this->view("transactions/delivery.php", ['product' => $product, 'transactions' => $transactions, 'status' => $time_diff]);
     }
   }
 

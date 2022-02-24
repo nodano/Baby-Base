@@ -1,12 +1,27 @@
+<?php require_once("transaction_header.php"); ?>
+
 <?php if ($is_seller) : ?>
-  <h1>買い手の支払いが完了していません。</h1>
+  <div class="alert">
+    <p>取引相手の支払いが完了していません</p>
+  </div>
 <?php else : ?>
-  <h1>支払いが完了していません。</h1>
-  <div>
-    <p>商品名: </p>
-    <p>値段: </p>
+
+  <div class="alert">
+    <p>購入手続きを行ってください</p>
+  </div>
+
+
+  <div class="transaction">
+    <p class="transaction-headline">支払い情報</p>
+    <div class="transaction-info">
+      <p><span>商品代金:</span> &yen;<?php echo Util::h(number_format($product['price'])); ?></p>
+    </div>
   </div>
   <form action='<?php echo "./${transactions['id']}/payments"; ?>' method="post" class="form">
+
+    <?php if (isset($_GET['error'])) : ?>
+      <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
+    <?php endif; ?>
 
     <fieldset class="form-fieldset">
       <legend class="form-fieldset-legend">決済</legend>
@@ -34,7 +49,7 @@
           <label for="postcode">郵便番号</label>
         </div>
         <div class="form-item-control">
-          <input type="number" name="postcode" id="postcode" class="form-item-input" placeholder="1234567" value="<?php if (isset($address['postcode'])) echo $address['postcode']; ?>">
+          <input type="number" name="postcode" id="postcode" class="form-item-input" placeholder="1234567" value="<?php if (isset($address['postcode'])) echo Util::h($address['postcode']); ?>">
         </div>
       </div>
 
@@ -43,7 +58,7 @@
           <label for="prefecture">都道府県</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="prefecture" id="prefecture" class="form-item-input" value="<?php if (isset($address['prefecture'])) echo $address['prefecture']; ?>">
+          <input type="text" name="prefecture" id="prefecture" class="form-item-input" value="<?php if (isset($address['prefecture'])) echo Util::h($address['prefecture']); ?>">
         </div>
       </div>
 
@@ -52,7 +67,7 @@
           <label for="city">市区町村</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="city" id="city" class="form-item-input" value="<?php if (isset($address['city'])) echo $address['city']; ?>">
+          <input type="text" name="city" id="city" class="form-item-input" value="<?php if (isset($address['city'])) echo Util::h($address['city']); ?>">
         </div>
       </div>
 
@@ -61,7 +76,7 @@
           <label for="chomei">丁目・番地・号</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="chomei" id="chomei" class="form-item-input" value="<?php if (isset($address['chomei'])) echo $address['chomei']; ?>">
+          <input type="text" name="chomei" id="chomei" class="form-item-input" value="<?php if (isset($address['chomei'])) echo Util::h($address['chomei']); ?>">
         </div>
       </div>
 
@@ -70,7 +85,7 @@
           <label for="building">建物名・会社名</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="building" id="building" class="form-item-input" value="<?php if (isset($address['building'])) echo $address['building']; ?>">
+          <input type="text" name="building" id="building" class="form-item-input" value="<?php if (isset($address['building'])) echo Util::h($address['building']); ?>">
         </div>
       </div>
 
@@ -79,7 +94,7 @@
           <label for="room_number">部屋番号</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="room_number" id="room_number" class="form-item-input" value="<?php if (isset($address['room_number'])) echo $address['room_number']; ?>">
+          <input type="text" name="room_number" id="room_number" class="form-item-input" value="<?php if (isset($address['room_number'])) echo Util::h($address['room_number']); ?>">
         </div>
       </div>
 
