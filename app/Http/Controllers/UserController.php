@@ -159,8 +159,32 @@ class UserController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    // DB取得
-    $this->view("user/favorite.php");
+
+    //ユーザIDの取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT products.id,name,price,status,path, 
+    CASE 
+      WHEN path LIKE '%0.png' THEN 'TOP'
+      ELSE 'NO' 
+      END 
+    FROM products INNER JOIN pictures ON products.id = pictures.product_id
+    INNER JOIN favorite ON products.id = favorite.products_id
+    
+    WHERE 
+    (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END)
+     = 'TOP'
+                          AND favorite.user_id = ? LIMIT 30;", [$user_id]);
+    $products = $stmt->fetchAll();
+
+
+
+
+    $params = ["products" => $products];
+
+    $this->view("user/favorite.php", $params);
   }
 
   /**

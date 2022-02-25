@@ -44,34 +44,42 @@ class AuthController extends Controller
 
 
     if ($name == false || $username == false || $email == false || $password == false) {
-      $this->push("auth/signup?error=blank");
+      $error = urlencode("入力されていないフォームがあります。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->valideteWordCount($username, 2, 8) == false) {
-      $this->push("auth/signup?error=username_length");
+      $error = urlencode("ユーザー名の文字数は、2文字以上8文字以下です。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->valideteWordCount($password, 2, 8) == false) {
-      $this->push("auth/signup?error=password_length");
+      $error = urlencode("パスワードの文字数は、2文字以上8文字以下です。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->validateEng($username) == false) {
-      $this->push("auth/signup?error=username_format");
+      $error = urlencode("ユーザー名は、半角英数のみです。");
+      $this->push("auth/signup?error=$error");
     }
     if ($validate->validateEng($password) == false) {
-      $this->push("auth/signup?error=password_format");
+      $error = urlencode("パスワードは、半角英数のみです。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->validateJP($name) == false) {
-      $this->push("auth/signup?error=name_format");
+      $error = urlencode("お名前は、日本語のみです。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->validateMail($email) == false) {
-      $this->push("auth/signup?error=email_format");
+      $error = urlencode("メールアドレスの形式が間違っています。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($validate->passCheck($password, $password2) == false) {
-      $this->push("auth/signup?error=password_mismatch");
+      $error = urlencode("入力されたパスワードが一致していません。");
+      $this->push("auth/signup?error=$error");
     }
 
     // 同一ID,Emailがないか
@@ -86,11 +94,13 @@ class AuthController extends Controller
     $sqlEmail = $stmt->fetch();
 
     if ($sqlUsername["count(*)"] != 0) {
-      $this->push("auth/signup?error=duplicate");
+      $error = urlencode("ユーザー名が、すでに登録されています。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($sqlEmail["count(*)"] != 0) {
-      $this->push("auth/signup?error=duplicate");
+      $error = urlencode("メールアドレスが、すでに登録されています。");
+      $this->push("auth/signup?error=$error");
     }
 
     $this->view("signup/confirm.php");
@@ -115,7 +125,8 @@ class AuthController extends Controller
     $password = $validate->validateTrim($_POST['password']);
 
     if ($name == false || $username == false || $email == false || $password == false) {
-      $this->push("auth/signup?error=blank");
+      $error = urlencode("入力されていないフォームがあります。");
+      $this->push("auth/signup?error=$error");
     }
 
     // 重複確認
@@ -130,11 +141,13 @@ class AuthController extends Controller
     $sqlEmail = $stmt->fetch();
 
     if ($sqlUsername["count(*)"] != 0) {
-      $this->push("auth/signup?error=duplicate");
+      $error = urlencode("ユーザー名が、すでに登録されています。");
+      $this->push("auth/signup?error=$error");
     }
 
     if ($sqlEmail["count(*)"] != 0) {
-      $this->push("auth/signup?error=duplicate");
+      $error = urlencode("メールアドレスが、すでに登録されています。");
+      $this->push("auth/signup?error=$error");
     }
 
     $hashed_password = password_hash($_POST['password'], PASSWORD_DEFAULT);
@@ -177,7 +190,8 @@ class AuthController extends Controller
     $password = $validate->validateTrim($_POST['password']);
 
     if ($login == false || $password == false) {
-      $this->push("auth/login?error=blank");
+      $error = urlencode("入力されていないフォームがあります。");
+      $this->push("auth/login?error=$error");
     }
 
 
@@ -186,7 +200,8 @@ class AuthController extends Controller
 
     $user = $stmt->fetch();
     if (!$user) {
-      $this->push("auth/login?error=auth");
+      $error = urlencode("ユーザー名またはパスワードが間違っています。");
+      $this->push("auth/login?error=$error");
     }
 
     if (password_verify($_POST['password'], $user['password'])) {
@@ -195,7 +210,8 @@ class AuthController extends Controller
 
       $this->push("mypage");
     } else {
-      $this->push("auth/login?error=auth");
+      $error = urlencode("ユーザー名またはパスワードが間違っています。");
+      $this->push("auth/login?error=$error");
     }
   }
 

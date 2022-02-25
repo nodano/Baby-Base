@@ -8,6 +8,30 @@
   <div class="product-body">
     <h1 class="product-name"><?php echo Util::h($product['name']); ?></h1>
     <p class="product-price"><span>&yen;<?php echo Util::h(number_format($product['price'])); ?></span> (税込) 送料込み</p>
+
+    <div class="product-favorite">
+      <form action='<?php echo "../products/${id}/favorite"; ?>' method="post">
+
+        <?php
+
+        if ($favoriteDisplay) : ?>
+          <button>
+            <?php
+            if ($favorite_status['count'] == 0) : ?>
+              <i class="far fa-heart" class="favoriteColor0"></i>
+            <?php
+            else : ?>
+              <i class="far fa-heart" class="favoriteColor1" style="background-color: #F00;"></i>
+          <?php
+            endif;
+          endif;
+          ?>
+          </button>
+
+
+      </form>
+    </div>
+
     <div class="product-option">
       <?php if (!isset($product['transaction_id']) && $product['seller_id'] === $user_id) : ?>
         <a href="<?php echo Util::h("${id}/update"); ?>">商品情報の更新</a>

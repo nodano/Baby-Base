@@ -48,29 +48,35 @@ class ListingController extends Controller
     $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
-      $this->push("listing?error=blank");
+      $error = urlencode("入力されていないフォームがあります。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->valideteWordCount($name, 1, 30) == false) {
-      $this->push("listing?error=name_length");
+      $error = urlencode("商品名は1文字以上30文字以下のみです。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->valideteWordCount($description, 0, 300) == false) {
-      $this->push("listing?error=description_length");
+      $error = urlencode("商品説明は、300文字以内までです。");
+      $this->push("listing?error=$error");
     }
 
     if (is_numeric($price) == false) {
-      $this->push("listing?error=price_format");
+      $error = urlencode("不正な数値です。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->validateInt($price, 100, 300000) == false) {
-      $this->push("listing?error=price_value");
+      $error = urlencode("値段は100円~300000円以内で設定してください。");
+      $this->push("listing?error=$error");
     }
 
     // 入力チェック
     $file_count = count($_FILES["picture"]["tmp_name"] ?? []);
     if ($file_count > 5) {
-      $this->push("listing?error=picture_count");
+      $error = urlencode("写真は5枚まで設定できます。");
+      $this->push("listing?error=$error");
     }
 
     /**
@@ -117,7 +123,8 @@ class ListingController extends Controller
 
         $handle->Process($upload_dir_local);
         if (!$handle->processed) {
-          $this->push("listing?error=file_process");
+          $error = urlencode("写真の形式が間違っています。");
+          $this->push("listing?error=$error");
         }
         $i++;
       }
@@ -149,23 +156,28 @@ class ListingController extends Controller
     $price        = $validate->validateTrim($_POST['price']);
 
     if ($name == false || $description == false || $price == false) {
-      $this->push("listing?error=blank");
+      $error = urlencode("入力されていないフォームがあります。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->valideteWordCount($name, 1, 30) == false) {
-      $this->push("listing?error=name_length");
+      $error = urlencode("商品名は1文字以上30文字以下のみです。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->valideteWordCount($description, 0, 300) == false) {
-      $this->push("listing?error=description_length");
+      $error = urlencode("商品説明は、300文字以内までです。");
+      $this->push("listing?error=$error");
     }
 
     if (is_numeric($price) == false) {
-      $this->push("listing?error=price_format");
+      $error = urlencode("不正な数値です。");
+      $this->push("listing?error=$error");
     }
 
     if ($validate->validateInt($price, 100, 300000) == false) {
-      $this->push("listing?error=price_value");
+      $error = urlencode("値段は100円~300000円以内で設定してください。");
+      $this->push("listing?error=$error");
     }
 
     $upload_files = []; // メインディレクトリに移動できた画像の配列

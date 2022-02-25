@@ -92,14 +92,28 @@ class ProductController extends Controller
     $stmt = $dba->query("SELECT * FROM pictures WHERE product_id = ?;", [$id]);
     $pictures = $stmt->fetchAll();
 
+    $favorite_status = false;
+    $favoriteDisplay = false;
+
     if ($this->auth->check()) {
       $user = $this->auth->getUser();
       $user_id = $user->getId();
+
+      $stmt = $dba->query("SELECT COUNT(*) AS 'count' FROM favorite WHERE user_id = ? && products_id = ? LIMIT 1;", [$user_id, $id]);
+      $favorite_status = $stmt->fetch();
     } else {
       $user_id = -100;
     }
 
-    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'user_id' => $user_id];
+    if ($user_id !== -100) {
+
+      if ($user_id !== $product['seller_id']) {
+        $favoriteDisplay = true;
+      }
+    }
+
+
+    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'user_id' => $user_id, 'favorite_status' => $favorite_status, 'favoriteDisplay' => $favoriteDisplay];
     $this->view("products/index.php", $params);
   }
 
@@ -194,6 +208,40 @@ class ProductController extends Controller
     // データベースの上書き
     $dba->query("UPDATE products SET name = ?, description = ?, price = ? WHERE id = ? LIMIT 1;", [$name, $description, $price, $id]);
 
+    $this->push("products/${id}");
+  }
+
+  public function favorite($id)
+  {
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT user_id FROM products WHERE id = ? LIMIT 1;", [$id]);
+    $product = $stmt->fetch();
+
+    //TODO:
+    //ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
+
+    //ユーザIDの取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    if ($user_id == $product['user_id']) {
+      $this->push("products/${id}error?=自分の商品はNG");
+    } else {
+      $stmt = $dba->query("SELECT COUNT(*) FROM favorite WHERE user_id = ? && products_id = ? LIMIT 1;", [$user_id, $id]);
+      $favorite_stats = $stmt->fetch();
+
+      //データベースに登録
+      if ($favorite_stats['COUNT(*)'] == 0) {
+        $dba->query("INSERT INTO favorite (user_id, products_id) VALUES (?, ?);", [$user_id, $id]);
+      } elseif ($favorite_stats['COUNT(*)'] == 1) {
+        $dba->query("DELETE FROM favorite WHERE user_id = ? && products_id = ?;", [$user_id, $id]);
+      }
+    }
+
+    //商品詳細ページにもどる
     $this->push("products/${id}");
   }
 }
