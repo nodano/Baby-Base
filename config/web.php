@@ -35,6 +35,7 @@ $router->map('GET', 'products', 'Http\Controllers\ProductController::get');
 $router->map('GET', 'products/[i:id]', 'Http\Controllers\ProductController::fetchByID');
 $router->map('GET', 'products/[i:id]/update', 'Http\Controllers\ProductController::renderUpdate');
 $router->map('POST', 'products/[i:id]/update', 'Http\Controllers\ProductController::update');
+$router->map('POST', 'products/[i:id]/favorite', 'Http\Controllers\ProductController::favorite'); //お気に入り登録
 
 $router->map('GET', 'transactions/[i:id]', 'Http\Controllers\TransactionController::fetchByID');
 $router->map('POST', 'transactions/[i:id]', 'Http\Controllers\TransactionController::transaction');

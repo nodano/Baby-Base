@@ -41,6 +41,7 @@ if ($match !== false) {
       require_once ROOT . "/resources/views/header.php";
       require_once ROOT . "/resources/views/error.php";
       require_once ROOT . "/resources/views/footer.php";
+      echo $e->getMessage();
     }
   }
 } else {
