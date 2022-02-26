@@ -2,7 +2,7 @@
 <form action="" method="post" class="form">
 
   <?php if (isset($_GET['error'])) : ?>
-    <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
+    <p class="form-error"><?php echo Util::h(urldecode($_GET['error'])); ?></p>
   <?php endif; ?>
 
   <div class="form-item">

@@ -5,6 +5,9 @@
       <a href="<?php echo PUBLIC_URL . "mypage/info"; ?>">ユーザー情報の更新</a>
     </li>
     <li>
+      <a href="<?php echo PUBLIC_URL . "mypage/favorite"; ?>">お気に入り商品</a>
+    </li>
+    <li>
       <a href="<?php echo PUBLIC_URL . "mypage/profit"; ?>">売上確認</a>
     </li>
   </ul>
