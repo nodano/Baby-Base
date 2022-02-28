@@ -1,13 +1,15 @@
 <div class="product">
   <div class="product-image-wrap">
-    <!-- <div class="product-image-main-container"> -->
-    <!-- <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $pictures[0]['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main"> -->
-    <!-- </div> -->
 
     <div class="slider-container">
       <div id="slider">
         <?php foreach ($pictures as $picture) : ?>
-          <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $picture['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main">
+          <div style="position: relative; overflow: hidden;">
+            <?php if (isset($product['transaction_id'])) : ?>
+              <div class="ribbon ribbon-top-right"><span>SOLD</span></div>
+            <?php endif; ?>
+            <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $picture['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main">
+          </div>
         <?php endforeach; ?>
       </div>
       <div id="thumbs">
@@ -41,7 +43,7 @@
         </div>
       <?php endif; ?>
       <?php if (!isset($product['transaction_id']) && $product['seller_id'] === $user_id) : ?>
-        <a href="<?php echo Util::h("${id}/update"); ?>">商品情報の更新</a>
+        <a href="<?php echo Util::h("${id}/update"); ?>" class="t-underline">商品情報の更新</a>
       <?php endif; ?>
     </div>
 
