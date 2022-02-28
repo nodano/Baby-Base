@@ -1,7 +1,20 @@
 <div class="product">
   <div class="product-image-wrap">
-    <div class="product-image-main-container">
-      <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $pictures[0]['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main">
+    <!-- <div class="product-image-main-container"> -->
+    <!-- <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $pictures[0]['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main"> -->
+    <!-- </div> -->
+
+    <div class="slider-container">
+      <div id="slider">
+        <?php foreach ($pictures as $picture) : ?>
+          <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $picture['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main">
+        <?php endforeach; ?>
+      </div>
+      <div id="thumbs">
+        <?php foreach ($pictures as $picture) : ?>
+          <img src="<?php echo Util::h(ROOT_URL . "/resources/images/main/" . $picture['path']); ?>" alt="<?php echo Util::h($product['name']); ?>の商品画像" class="product-image-main">
+        <?php endforeach; ?>
+      </div>
     </div>
   </div>
 
@@ -50,7 +63,11 @@
 
     <div class="product-description-container">
       <h2 class="product-headline">出品者</h2>
-      <p><?php echo Util::h($product['username']); ?></p>
+      <p>
+        <a href="<?php echo PUBLIC_URL . 'users/' . $product['seller_id']; ?>">
+          <?php echo Util::h($product['username']); ?>
+        </a>
+      </p>
       <h2 class="product-headline">商品の説明</h2>
       <p class="product-description"><?php echo nl2br(Util::h($product['description'])); ?></p>
     </div>

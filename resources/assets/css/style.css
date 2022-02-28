@@ -135,3 +135,65 @@
   color: red;
   text-align: center;
 }
+
+
+/** チャット */
+
+.chat {
+  margin-bottom: 1.9rem;
+}
+.chat-wrap {
+  padding: 1rem 0;
+  max-height: 500px;
+  background: #E5E5E5;
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.chat-list {
+  margin: 0 1.9rem;
+}
+
+.chat-item {
+  display: flex;
+  align-items: flex-end;
+  max-width: 70%;
+}
+.chat-item:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.chat-item.chat-item-mine {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+.chat-item-mine .chat-item-body {
+  margin: 0 0 0 .4rem;
+  background-color: #30e852;
+}
+
+.chat-item-body {
+  padding: .7rem;
+  margin: 0 .4rem 0 0;
+  background-color: white;
+  border-radius: 12px;
+}
+
+.chat-item-time {
+  flex: none;
+}
+
+.chat-form {
+  display: flex;
+}
+
+.chat-button {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  background: #04ACF5;
+  border-radius: 4px;
+}
+.chat-button i {
+  color: white;
+}

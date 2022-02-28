@@ -17,12 +17,25 @@ class UserController extends Controller
    */
   public function fetchByID($id)
   {
-    // もし自分のページなら遷移する
     if ($this->auth->check()) {
+      // もし自分のページなら遷移する
       $user = $this->auth->getUser();
-      if ($id == $user->getId()) {
+      $user_id = $user->getId();
+      if ($id == $user_id) {
         $this->push("mypage");
       }
+
+      // // ブロックしている or されているなら見せない
+      // $dba = DBAccess::getInstance();
+      // $stmt = $dba->query("SELECT user_id, target_user_id FROM blocks WHERE (user_id = ? AND target_user_id = ?) OR (user_id = ? AND target_user_id = ?);", [$user_id, $id, $id, $user_id]);
+      // $result = $stmt->fetchAll();
+
+      // foreach ($result as $block) {
+      //   // user_id === $user_id なら自分がブロックしている
+      //   // 見るオプションでないならブロックする
+
+      //   // target_user_id === $user_id ならブロックされている
+      // }
     }
 
     $params = $this->getUserPageInfo($id);
@@ -136,7 +149,7 @@ class UserController extends Controller
     $dba = DBAccess::getInstance();
 
     // transfersテーブルから商品名と利益を取得
-    $stmt = $dba->query("SELECT transfers.amount, products.name FROM transfers LEFT OUTER JOIN transactions ON transfers.transaction_id = transactions.id LEFT OUTER JOIN products ON transactions.product_id = products.id WHERE transactions.user_id = ?;", [$user_id]);
+    $stmt = $dba->query("SELECT transfers.amount, products.name FROM transfers LEFT OUTER JOIN transactions ON transfers.transaction_id = transactions.id LEFT OUTER JOIN products ON transactions.product_id = products.id WHERE products.user_id = ?;", [$user_id]);
     $transfers = $stmt->fetchAll();
 
     $total = 0;
@@ -198,10 +211,53 @@ class UserController extends Controller
     if (!$this->auth->check()) {
       $this->push("auth/login");
     }
-    // DB取得
-    $this->view("user/block.php");
+
+    // ブロックしているユーザーの一覧を取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    $dba = DBAccess::getInstance();
+    $stmt = $dba->query("SELECT users.id, users.username FROM blocks LEFT OUTER JOIN users ON blocks.target_user_id = users.id WHERE blocks.user_id = ?;", [$user_id]);
+    $users = $stmt->fetchAll();
+
+    $params = ['users' => $users];
+
+    $this->view("user/block.php", $params);
   }
 
+  // /**
+  //  * POST users/:id/block
+  //  */
+  // public function userBlock($id)
+  // {
+  //   // ログイン確認
+  //   if (!$this->auth->check()) {
+  //     $this->push("auth/login");
+  //   }
+
+  //   // 自分自身でないことを確認する
+  //   $user = $this->auth->getUser();
+  //   $user_id = $user->getId();
+  //   if ($id === $user_id) {
+  //     $this->push("mypage");
+  //   }
+
+  //   /**
+  //    * 存在していなければブロック
+  //    *  存在していればブロックの解除
+  //    */
+  //   // ブロックページ or ユーザーページへ
+  //   $dba = DBAccess::getInstance();
+  //   // TODO: SQLの効率化
+  //   $stmt = $dba->query("SELECT target_user_id FROM blocks WHERE user_id = ? AND target_user_id = ? LIMIT 1;", [$user_id, $id]);
+  //   if ($stmt->fetch()) {
+  //     $dba->query("DELETE FROM blocks WHERE user_id = ? AND target_user_id = ? LIMIT 1;", [$user_id, $id]);
+  //     $this->push("users/${id}");
+  //   } else {
+  //     $dba->query("INSERT INTO blocks (user_id, target_user_id) VALUES (?, ?);", [$user_id, $id]);
+  //     $this->push("mypage/block");
+  //   }
+  // }
 
   /**
    * マイページや会員ページの情報を取得する
@@ -218,7 +274,7 @@ class UserController extends Controller
     $user = $stmt->fetch();
 
     // テーブルから出品した商品をすべて取得
-    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, products.status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? LIMIT 30;", [$id]);
+    $stmt = $dba->query("SELECT DISTINCT products.id, name, price, products.status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? AND (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END) = 'TOP' LIMIT 30;", [$id]);
     $products = $stmt->fetchAll();
 
     return ['user' => $user, 'products' => $products];

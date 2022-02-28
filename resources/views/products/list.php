@@ -1,14 +1,13 @@
 <h1>商品一覧</h1>
 <form action="" method="get">
-      <input type="text" name="search">
+  <input type="text" name="search">
+  <input type="submit" value="検索">
   <select name="sort">
-    <option value="">選択してください</option>
-    <option value="priceDesc">価格高い順</option>
-    <option value="priceAsc">価格安い順</option>
-    <option value="idDesc">最新商品</option>
-    <option value="idAsc">最古商品</option>
+    <option value="idAsc">古い順</option>
+    <option value="idDesc">新しい順</option>
+    <option value="priceAsc">価格の安い順</option>
+    <option value="priceDesc">価格の高い順</option>
   </select>
-  <input type="submit" value="送信">
 </form>
 
 <div class="card-container">
