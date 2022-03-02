@@ -7,13 +7,38 @@
   margin-right: auto;
 }
 
-.product-image-wrap img {
+
+/** slickのデザイン */
+.slider-container{
+  margin:0 auto 0 50px;
+}
+.slick-prev,.slick-next{z-index:2;}
+.slick-prev{left:0!important;}
+.slick-next{right:0!important;}
+.slick-arrow::before {
+  color: red !important;
+}
+#thumbs .slick-current > div{
+  border:2px solid #000;
+}
+.slick-slide{
+padding:5px;
+}
+
+.product-image-wrap #slider img {
   display: block;
   margin: 0 auto;
   width: 400px;
   height: 400px;
   object-fit: contain;
 }
+
+.product-image-wrap #thumbs img {
+  width: 100px !important;
+  height: 100px !important;
+  object-fit: contain;
+}
+
 
 .product-body {
   width: 35%;

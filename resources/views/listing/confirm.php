@@ -19,7 +19,7 @@ $files_count = count($files);
       <label for="name">商品名</label>
     </div>
     <div class="form-item-control">
-      <input type="text" name="name" id="name" value="<?php echo Util::h($_POST['name']); ?>" class="form-item-input" readonly required>
+      <input type="text" name="name" id="name" value="<?php echo Util::h($_POST['name']); ?>" class="form-item-input form-item-input-readonly" readonly required>
     </div>
   </div>
 
@@ -28,7 +28,7 @@ $files_count = count($files);
       <label for="description">商品説明</label>
     </div>
     <div class="form-item-control">
-      <textarea name="description" id="description" class="form-item-input form-item-input-textarea" cols="30" rows="10" readonly required><?php echo Util::h($_POST['description']); ?></textarea>
+      <textarea name="description" id="description" class="form-item-input form-item-input-textarea form-item-input-readonly" cols="30" rows="10" readonly required><?php echo Util::h($_POST['description']); ?></textarea>
     </div>
   </div>
 
@@ -37,7 +37,7 @@ $files_count = count($files);
       <label for="price">値段</label>
     </div>
     <div class="form-item-control">
-      <input type="number" name="price" id="price" class="form-item-input" min="100" max="300000" value="<?php echo Util::h($_POST['price']); ?>" readonly required>
+      <input type="number" name="price" id="price" class="form-item-input form-item-input-readonly" min="100" max="300000" value="<?php echo Util::h($_POST['price']); ?>" readonly required>
     </div>
   </div>
 

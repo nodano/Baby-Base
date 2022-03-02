@@ -1,5 +1,4 @@
   <h1>ブロック一覧</h1>
-
   <?php
   for ($i = 0; $i < $blockCount; $i++) : ?>
     <div class="product-block">

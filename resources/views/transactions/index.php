@@ -20,7 +20,7 @@
   <form action='<?php echo "./${transactions['id']}/payments"; ?>' method="post" class="form">
 
     <?php if (isset($_GET['error'])) : ?>
-      <p class="form-error"><?php echo Util::h($_GET['error']); ?></p>
+      <p class="form-error"><?php echo Util::h(urldecode($_GET['error'])); ?></p>
     <?php endif; ?>
 
     <fieldset class="form-fieldset">
@@ -49,7 +49,7 @@
           <label for="postcode">郵便番号</label>
         </div>
         <div class="form-item-control">
-          <input type="number" name="postcode" id="postcode" class="form-item-input" placeholder="1234567" value="<?php if (isset($address['postcode'])) echo Util::h($address['postcode']); ?>">
+          <input type="number" name="postcode" id="postcode" class="form-item-input" placeholder="1234567" value="<?php if (isset($address['postcode'])) echo Util::h($address['postcode']); ?>" required>
         </div>
       </div>
 
@@ -58,7 +58,7 @@
           <label for="prefecture">都道府県</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="prefecture" id="prefecture" class="form-item-input" value="<?php if (isset($address['prefecture'])) echo Util::h($address['prefecture']); ?>">
+          <input type="text" name="prefecture" id="prefecture" class="form-item-input" value="<?php if (isset($address['prefecture'])) echo Util::h($address['prefecture']); ?>" required>
         </div>
       </div>
 
@@ -67,7 +67,7 @@
           <label for="city">市区町村</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="city" id="city" class="form-item-input" value="<?php if (isset($address['city'])) echo Util::h($address['city']); ?>">
+          <input type="text" name="city" id="city" class="form-item-input" value="<?php if (isset($address['city'])) echo Util::h($address['city']); ?>" required>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
           <label for="chomei">丁目・番地・号</label>
         </div>
         <div class="form-item-control">
-          <input type="text" name="chomei" id="chomei" class="form-item-input" value="<?php if (isset($address['chomei'])) echo Util::h($address['chomei']); ?>">
+          <input type="text" name="chomei" id="chomei" class="form-item-input" value="<?php if (isset($address['chomei'])) echo Util::h($address['chomei']); ?>" required>
         </div>
       </div>
 

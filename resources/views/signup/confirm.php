@@ -11,7 +11,7 @@
       <label for="name">氏名: </label>
     </div>
     <div class="form-item-control">
-      <input type="text" name="name" id="name" value="<?php echo Util::h($_POST['name']); ?>" class="form-item-input" readonly required>
+      <input type="text" name="name" id="name" value="<?php echo Util::h($_POST['name']); ?>" class="form-item-input form-item-input-readonly" readonly required>
     </div>
   </div>
 
@@ -20,7 +20,7 @@
       <label for="username">ユーザー名: </label>
     </div>
     <div class="form-item-control">
-      <input type="text" name="username" id="username" value="<?php echo Util::h($_POST['username']); ?>" class="form-item-input" readonly required>
+      <input type="text" name="username" id="username" value="<?php echo Util::h($_POST['username']); ?>" class="form-item-input form-item-input-readonly" readonly required>
     </div>
   </div>
 
@@ -29,7 +29,7 @@
       <label for="email">メールアドレス: </label>
     </div>
     <div class="form-item-control">
-      <input type="email" name="email" id="email" value="<?php echo Util::h($_POST['email']); ?>" class="form-item-input" readonly required>
+      <input type="email" name="email" id="email" value="<?php echo Util::h($_POST['email']); ?>" class="form-item-input form-item-input-readonly" readonly required>
     </div>
   </div>
 

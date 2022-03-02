@@ -49,6 +49,10 @@
   font-weight: bold;
 }
 
+.t-underline {
+  text-decoration: underline;
+}
+
 
 
 /** ユーザーページ */
@@ -134,4 +138,121 @@
   font-size: 2.4rem;
   color: red;
   text-align: center;
+}
+
+
+/** チャット */
+
+.chat {
+  margin-bottom: 1.9rem;
+}
+.chat-wrap {
+  padding: 1rem 0;
+  max-height: 500px;
+  background: #E5E5E5;
+  box-sizing: border-box;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.chat-list {
+  margin: 0 1.9rem;
+}
+
+.chat-item {
+  display: flex;
+  align-items: flex-end;
+  max-width: 70%;
+}
+.chat-item:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.chat-item.chat-item-mine {
+  flex-direction: row-reverse;
+  margin-left: auto;
+}
+.chat-item-mine .chat-item-body {
+  margin: 0 0 0 .4rem;
+  background-color: #30e852;
+}
+
+.chat-item-body {
+  padding: .7rem;
+  margin: 0 .4rem 0 0;
+  background-color: white;
+  border-radius: 12px;
+}
+
+.chat-item-time {
+  flex: none;
+}
+
+.chat-form {
+  display: flex;
+}
+
+.chat-button {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  background: #04ACF5;
+  border-radius: 4px;
+}
+.chat-button i {
+  color: white;
+}
+
+
+/* 売り切れボタン */
+.ribbon {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  position: absolute;
+  z-index: 100;
+}
+.ribbon::before,
+.ribbon::after {
+  position: absolute;
+  z-index: -1;
+  content: '';
+  display: block;
+  border: 5px solid #b92929;
+}
+.ribbon span {
+  position: absolute;
+  display: block;
+  width: 225px;
+  padding: 15px 0;
+  background-color: #db3434;
+  box-shadow: 0 5px 10px rgba(0,0,0,.1);
+  color: #fff;
+  font: 700 18px/1 'Lato', sans-serif;
+  text-shadow: 0 1px 1px rgba(0,0,0,.2);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* top right*/
+.ribbon-top-right {
+  top: -10px;
+  right: -10px;
+}
+.ribbon-top-right::before,
+.ribbon-top-right::after {
+  border-top-color: transparent;
+  border-right-color: transparent;
+}
+.ribbon-top-right::before {
+  top: 0;
+  left: 0;
+}
+.ribbon-top-right::after {
+  bottom: 0;
+  right: 0;
+}
+.ribbon-top-right span {
+  left: -25px;
+  top: 30px;
+  transform: rotate(45deg);
 }

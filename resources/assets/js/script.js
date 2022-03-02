@@ -20,3 +20,20 @@ hamburgerTrigger.forEach((element) => {
     // 付け替え
   });
 });
+
+/**
+ * 商品詳細のslick
+ */
+$("#slider").slick({
+  //ここにオプション
+  asNavFor: "#thumbs",
+});
+$("#thumbs").slick({
+  //ここにオプション
+  asNavFor: "#slider",
+  slidesToShow: 5,
+});
+$("#thumbs .slick-slide").on("click", function () {
+  let index = $(this).attr("data-slick-index");
+  $("#slider").slick("slickGoTo", index);
+});

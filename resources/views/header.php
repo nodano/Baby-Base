@@ -20,6 +20,12 @@
     <link rel="stylesheet" href="<?php echo ASSETS_URL . 'css/style.css'; ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" href="<?php echo ASSETS_URL . "images/favicon.ico" ?>">
+
+    <!-- slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 </head>
 
 <body>
@@ -39,10 +45,6 @@
                                 <button type="submit" class="button button-search"><i class="fas fa-search"></i></button>
                             </div>
                         </form>
-                    </div>
-                    <div>
-                        <div>カテゴリー~~~</div>
-                        <div>性別から~~~</div>
                     </div>
                     <div class="grid-container">
                         <p class="grid-headline">ご利用ガイド</p>
@@ -117,7 +119,7 @@
     </header>
 
     <main class="main">
-        <ul>
+        <!-- <ul>
             <li><a href="<?php echo PUBLIC_URL . "" ?>">TOP</a></li>
             <li><a href="<?php echo PUBLIC_URL . "auth/signup" ?>">サインアップ</a></li>
             <li><a href="<?php echo PUBLIC_URL . "auth/login" ?>">ログイン</a></li>
@@ -133,4 +135,4 @@
             <li><a href="<?php echo PUBLIC_URL . "products/6" ?>">商品ID: 6の商品詳細</a></li>
             <li><a href="<?php echo PUBLIC_URL . "products/3/update" ?>">商品ID: 3の商品更新</a></li>
             <li><a href="<?php echo PUBLIC_URL . "transactions/4" ?>">取引ID: 4の取引画面</a></li>
-        </ul>
+        </ul> -->
