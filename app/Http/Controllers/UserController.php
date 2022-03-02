@@ -217,47 +217,78 @@ class UserController extends Controller
     $user_id = $user->getId();
 
     $dba = DBAccess::getInstance();
-    $stmt = $dba->query("SELECT users.id, users.username FROM blocks LEFT OUTER JOIN users ON blocks.target_user_id = users.id WHERE blocks.user_id = ?;", [$user_id]);
-    $users = $stmt->fetchAll();
 
-    $params = ['users' => $users];
+    $stmt = $dba->query("SELECT users.id, name FROM block INNER JOIN users ON block.to_user_id = users.id WHERE from_user_id = ?;", [$user_id]);
+    $blockList = $stmt->fetchAll();
 
+    $stmt = $dba->query("SELECT count(*) FROM block INNER JOIN users ON block.to_user_id = users.id WHERE from_user_id = ?;", [$user_id]);
+    $count = $stmt->fetch();
+    $blockCount = $count['count(*)'];
+
+    $params = ["blockList" => $blockList, "blockCount" => $blockCount, "user_id" => $user_id];
+
+    // DB取得
     $this->view("user/block.php", $params);
   }
 
-  // /**
-  //  * POST users/:id/block
-  //  */
-  // public function userBlock($id)
-  // {
-  //   // ログイン確認
-  //   if (!$this->auth->check()) {
-  //     $this->push("auth/login");
-  //   }
+  public function userBlock($id)
+  {
 
-  //   // 自分自身でないことを確認する
-  //   $user = $this->auth->getUser();
-  //   $user_id = $user->getId();
-  //   if ($id === $user_id) {
-  //     $this->push("mypage");
-  //   }
+    $dba = DBAccess::getInstance();
 
-  //   /**
-  //    * 存在していなければブロック
-  //    *  存在していればブロックの解除
-  //    */
-  //   // ブロックページ or ユーザーページへ
-  //   $dba = DBAccess::getInstance();
-  //   // TODO: SQLの効率化
-  //   $stmt = $dba->query("SELECT target_user_id FROM blocks WHERE user_id = ? AND target_user_id = ? LIMIT 1;", [$user_id, $id]);
-  //   if ($stmt->fetch()) {
-  //     $dba->query("DELETE FROM blocks WHERE user_id = ? AND target_user_id = ? LIMIT 1;", [$user_id, $id]);
-  //     $this->push("users/${id}");
-  //   } else {
-  //     $dba->query("INSERT INTO blocks (user_id, target_user_id) VALUES (?, ?);", [$user_id, $id]);
-  //     $this->push("mypage/block");
-  //   }
-  // }
+    echo $id;
+    // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
+
+    //ユーザIDの取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    // block
+    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+    $BlockStatus = $stmt->fetch();
+
+    if ($BlockStatus["count(*)"] == 1) {
+      //DBから削除
+      $dba->query("DELETE FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+    } else {
+      //DBに登録
+      $dba->query("INSERT INTO block(from_user_id, to_user_id) VALUES(?,?);", [$user_id, $id]);
+    }
+
+    $this->push("users/$id");
+  }
+
+  public function blocklist($id)
+  {
+    $dba = DBAccess::getInstance();
+
+    echo $id;
+    // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    }
+
+    //ユーザIDの取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
+    // block
+    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+    $BlockStatus = $stmt->fetch();
+
+    if ($BlockStatus["count(*)"] == 1) {
+      //DBから削除
+      $dba->query("DELETE FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+    } else {
+      //DBに登録
+      $dba->query("INSERT INTO block(from_user_id, to_user_id) VALUES(?,?);", [$user_id, $id]);
+    }
+
+    $this->push("mypage/block");
+  }
 
   /**
    * マイページや会員ページの情報を取得する
@@ -267,7 +298,42 @@ class UserController extends Controller
    */
   private function getUserPageInfo(int $id)
   {
+    $blockDisplay = false;
+    $BlockStatus = false;
+    $blockedStatus = false;
+    $blockDisplayError = false;
+
+    // ログイン確認
+    if (!$this->auth->check()) {
+      $this->push("auth/login");
+    } else {
+      $blockDisplay = true;
+    }
+
+    //ユーザIDの取得
+    $user = $this->auth->getUser();
+    $user_id = $user->getId();
+
     $dba = DBAccess::getInstance();
+
+    //取引確認
+    $stmt = $dba->query("SELECT COUNT(*) FROM transactions INNER JOIN products ON transactions.product_id = products.id 
+                          WHERE transactions.status != 4 && ((products.user_id = ? && transactions.user_id = ?) ||
+                          (transactions.user_id = ? && products.user_id = ?));", [$user_id, $id, $id, $user_id]);
+
+    $transacttionCount = $stmt->fetch();
+
+    if ($transacttionCount['COUNT(*)'] > 0) {
+      $blockDisplayError = true;
+    }
+
+    // block
+    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$id, $user_id]);
+    $BlockStatus = $stmt->fetch();
+
+    if ($BlockStatus["count(*)"] == 1) {
+      $blockedStatus = true;
+    }
 
     // ユーザー情報の取得
     $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
@@ -277,6 +343,16 @@ class UserController extends Controller
     $stmt = $dba->query("SELECT DISTINCT products.id, name, price, products.status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? AND (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END) = 'TOP' LIMIT 30;", [$id]);
     $products = $stmt->fetchAll();
 
-    return ['user' => $user, 'products' => $products];
+    // block
+    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+    $BlockStatus = $stmt->fetch();
+
+    if ($BlockStatus["count(*)"] == 1) {
+      $BlockStatus = true;
+    } else {
+      $BlockStatus = false;
+    }
+
+    return ['user' => $user, 'products' => $products, "blockDisplay" => $blockDisplay, "blockStatus" => $BlockStatus, "blockedStatus" => $blockedStatus, "blockDisplayError" => $blockDisplayError];
   }
 }

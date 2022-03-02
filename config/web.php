@@ -14,6 +14,7 @@ $router->map('POST', 'auth/login', 'Http\Controllers\AuthController::auth');
 $router->map('GET', 'auth/logout', 'Http\Controllers\AuthController::logout');
 
 $router->map('GET', 'users/[i:id]', 'Http\Controllers\UserController::fetchByID', 'users-detail');
+$router->map('POST', 'users/[i:id]/block', 'Http\Controllers\UserController::userBlock'); //ユーザーのブロック
 
 $router->map('GET', 'mypage', 'Http\Controllers\UserController::mypage');
 
@@ -24,6 +25,7 @@ $router->map('GET', 'mypage/profit', 'Http\Controllers\UserController::profit');
 
 $router->map('GET', 'mypage/favorite', 'Http\Controllers\UserController::favorite');
 $router->map('GET', 'mypage/block', 'Http\Controllers\UserController::block');
+$router->map('POST', 'mypage/block/[i:id]', 'Http\Controllers\UserController::blocklist');
 
 $router->map('GET', 'listing', 'Http\Controllers\ListingController::renderListing');
 $router->map('POST', 'listing/confirm', 'Http\Controllers\ListingController::confirm');

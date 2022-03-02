@@ -1,13 +1,10 @@
   <h1>ブロック一覧</h1>
-  <div class="block">
-    <ul>
-      <?php foreach ($users as $user) : ?>
-        <li class="block-item">
-          <a href="<?php echo '../users/' . $user['id'] . '?block=show'; ?>"><?php echo Util::h($user['username']); ?></a>
-          <form action="<?php echo '../users/' . $user['id'] . '/block'; ?>" method="post">
-            <input type="submit" value="ブロックを解除する" class="button button-secondary">
-          </form>
-        </li>
-      <?php endforeach; ?>
-    </ul>
-  </div>
+  <?php
+  for ($i = 0; $i < $blockCount; $i++) : ?>
+    <div class="product-block">
+      <p><?php print($blockList[$i]['name']); ?></p>
+      <form action="<?php echo  "block/" . $blockList[$i]['id']; ?>" method="POST">
+        <input type="submit" class="button" value="ブロックを解除">
+      </form>
+    </div>
+  <?php endfor; ?>
