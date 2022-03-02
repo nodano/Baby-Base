@@ -35,6 +35,8 @@
     <div class="product-transaction">
       <?php if (!isset($product['transaction_id']) && !$auth['is_login']) : ?>
         <a href="<?php echo PUBLIC_URL . "auth/login"; ?>" class="button">購入にはログインが必要です</a>
+      <?php elseif ($blocked) : ?>
+        <button class="button button-disable">このユーザーをブロック中、もしくはブロックされているされているため、購入できません。</button>
       <?php elseif (!isset($product['transaction_id']) && $product['seller_id'] === $user_id) : ?>
         <button class="button button-disable">まだ購入されていません</button>
       <?php elseif (!isset($product['transaction_id']) && $product['seller_id'] !== $user_id) : ?>

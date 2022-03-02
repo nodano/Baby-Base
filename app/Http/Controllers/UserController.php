@@ -306,7 +306,7 @@ class UserController extends Controller
     //取引確認
     $stmt = $dba->query("SELECT COUNT(*) FROM transactions INNER JOIN products ON transactions.product_id = products.id 
                           WHERE transactions.status != 4 && ((products.user_id = ? && transactions.user_id = ?) ||
-                          (transactions.user_id = ? && products.user_id = ?));", [$user_id, $id, $id, $user_id]);
+                          (transactions.user_id = ? && products.user_id = ?));", [$user_id, $id, $user_id, $id]);
 
     $transacttionCount = $stmt->fetch();
 
