@@ -94,6 +94,7 @@ class ProductController extends Controller
 
     $favorite_status = false;
     $favoriteDisplay = false;
+    $blocked = false;
 
     if ($this->auth->check()) {
       $user = $this->auth->getUser();
@@ -112,8 +113,17 @@ class ProductController extends Controller
       }
     }
 
+    // block確認
+    $stmt = $dba->query("SELECT count(*) FROM block WHERE (from_user_id = ? && to_user_id = ?) || (from_user_id = ? && to_user_id = ?);", [$product['seller_id'], $user_id, $user_id, $product['seller_id']]);
+    $blockedCount = $stmt->fetch();
 
-    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'user_id' => $user_id, 'favorite_status' => $favorite_status, 'favoriteDisplay' => $favoriteDisplay];
+    if ($blockedCount["count(*)"] > 0) {
+      $blocked = true;
+    }
+
+
+
+    $params = ['id' => $id, 'product' => $product, 'pictures' => $pictures, 'user_id' => $user_id, 'favorite_status' => $favorite_status, 'favoriteDisplay' => $favoriteDisplay, 'blocked' => $blocked];
     $this->view("products/index.php", $params);
   }
 
