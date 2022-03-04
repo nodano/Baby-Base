@@ -256,3 +256,44 @@
   top: 30px;
   transform: rotate(45deg);
 }
+
+
+/** ブロック一覧 */
+.product-block {
+  display: flex;
+  align-items: center;
+}
+.product-block p {
+  margin-right: auto;
+}
+
+
+
+/** 商品一覧画面の検索フォーム */
+.form-search {}
+.form-search .form-item {
+  display: flex;
+}
+.form-search .form-search-container {
+  position: relative;
+  margin-right: 1.9rem;
+  width: 70%;
+}
+.form-search .form-search-container .form-item-input {
+  padding-right: 50px;
+  border-radius: 10px;
+}
+.form-search-container button {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: 0;
+}
+.form-search-container button i {
+  font-size: 1.4rem;
+}
+.form-search select {
+  flex: 1 0;
+}

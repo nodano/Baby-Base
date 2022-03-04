@@ -94,12 +94,12 @@ class AuthController extends Controller
     $sqlEmail = $stmt->fetch();
 
     if ($sqlUsername["count(*)"] != 0) {
-      $error = urlencode("ユーザー名が、すでに登録されています。");
+      $error = urlencode("このユーザー名またはメールアドレスは、すでに登録されています。");
       $this->push("auth/signup?error=$error");
     }
 
     if ($sqlEmail["count(*)"] != 0) {
-      $error = urlencode("メールアドレスが、すでに登録されています。");
+      $error = urlencode("このユーザー名またはメールアドレスは、すでに登録されています。");
       $this->push("auth/signup?error=$error");
     }
 
@@ -141,12 +141,12 @@ class AuthController extends Controller
     $sqlEmail = $stmt->fetch();
 
     if ($sqlUsername["count(*)"] != 0) {
-      $error = urlencode("ユーザー名が、すでに登録されています。");
+      $error = urlencode("このユーザー名またはメールアドレスは、すでに登録されています。");
       $this->push("auth/signup?error=$error");
     }
 
     if ($sqlEmail["count(*)"] != 0) {
-      $error = urlencode("メールアドレスが、すでに登録されています。");
+      $error = urlencode("このユーザー名またはメールアドレスは、すでに登録されています。");
       $this->push("auth/signup?error=$error");
     }
 

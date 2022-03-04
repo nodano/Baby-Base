@@ -24,18 +24,6 @@ class UserController extends Controller
       if ($id == $user_id) {
         $this->push("mypage");
       }
-
-      // // ブロックしている or されているなら見せない
-      // $dba = DBAccess::getInstance();
-      // $stmt = $dba->query("SELECT user_id, target_user_id FROM blocks WHERE (user_id = ? AND target_user_id = ?) OR (user_id = ? AND target_user_id = ?);", [$user_id, $id, $id, $user_id]);
-      // $result = $stmt->fetchAll();
-
-      // foreach ($result as $block) {
-      //   // user_id === $user_id なら自分がブロックしている
-      //   // 見るオプションでないならブロックする
-
-      //   // target_user_id === $user_id ならブロックされている
-      // }
     }
 
     $params = $this->getUserPageInfo($id);
@@ -218,7 +206,7 @@ class UserController extends Controller
 
     $dba = DBAccess::getInstance();
 
-    $stmt = $dba->query("SELECT users.id, name FROM block INNER JOIN users ON block.to_user_id = users.id WHERE from_user_id = ?;", [$user_id]);
+    $stmt = $dba->query("SELECT users.id, username FROM block INNER JOIN users ON block.to_user_id = users.id WHERE from_user_id = ?;", [$user_id]);
     $blockList = $stmt->fetchAll();
 
     $stmt = $dba->query("SELECT count(*) FROM block INNER JOIN users ON block.to_user_id = users.id WHERE from_user_id = ?;", [$user_id]);
@@ -302,39 +290,45 @@ class UserController extends Controller
     $BlockStatus = false;
     $blockedStatus = false;
     $blockDisplayError = false;
-
-    // ログイン確認
-    if (!$this->auth->check()) {
-      $this->push("auth/login");
-    } else {
-      $blockDisplay = true;
-    }
-
-    //ユーザIDの取得
-    $user = $this->auth->getUser();
-    $user_id = $user->getId();
-
     $dba = DBAccess::getInstance();
 
-    //取引確認
-    $stmt = $dba->query("SELECT COUNT(*) FROM transactions INNER JOIN products ON transactions.product_id = products.id 
+    // ログイン確認
+    if ($this->auth->check()) {
+      $blockDisplay = true;
+      //ユーザIDの取得
+      $user = $this->auth->getUser();
+      $user_id = $user->getId();
+
+
+      //取引確認
+      $stmt = $dba->query("SELECT COUNT(*) FROM transactions INNER JOIN products ON transactions.product_id = products.id 
                           WHERE transactions.status != 4 && ((products.user_id = ? && transactions.user_id = ?) ||
                           (transactions.user_id = ? && products.user_id = ?));", [$user_id, $id, $user_id, $id]);
 
-    $transacttionCount = $stmt->fetch();
+      $transacttionCount = $stmt->fetch();
 
-    if ($transacttionCount['COUNT(*)'] > 0) {
-      $blockDisplayError = true;
+      if ($transacttionCount['COUNT(*)'] > 0) {
+        $blockDisplayError = true;
+      }
+
+      // block
+      $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$id, $user_id]);
+      $BlockStatus = $stmt->fetch();
+
+      if ($BlockStatus["count(*)"] == 1) {
+        $blockedStatus = true;
+      }
+
+      // block
+      $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
+      $BlockStatus = $stmt->fetch();
+
+      if ($BlockStatus["count(*)"] == 1) {
+        $BlockStatus = true;
+      } else {
+        $BlockStatus = false;
+      }
     }
-
-    // block
-    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$id, $user_id]);
-    $BlockStatus = $stmt->fetch();
-
-    if ($BlockStatus["count(*)"] == 1) {
-      $blockedStatus = true;
-    }
-
     // ユーザー情報の取得
     $stmt = $dba->query("SELECT id, username FROM users WHERE id = ?;", [$id]);
     $user = $stmt->fetch();
@@ -342,16 +336,6 @@ class UserController extends Controller
     // テーブルから出品した商品をすべて取得
     $stmt = $dba->query("SELECT DISTINCT products.id, name, price, products.status, path FROM products LEFT OUTER JOIN pictures ON products.id = pictures.product_id WHERE products.user_id = ? AND (CASE WHEN path LIKE '%0.png' THEN 'TOP' ELSE 'NO' END) = 'TOP' LIMIT 30;", [$id]);
     $products = $stmt->fetchAll();
-
-    // block
-    $stmt = $dba->query("SELECT count(*) FROM block WHERE from_user_id = ? && to_user_id = ?;", [$user_id, $id]);
-    $BlockStatus = $stmt->fetch();
-
-    if ($BlockStatus["count(*)"] == 1) {
-      $BlockStatus = true;
-    } else {
-      $BlockStatus = false;
-    }
 
     return ['user' => $user, 'products' => $products, "blockDisplay" => $blockDisplay, "blockStatus" => $BlockStatus, "blockedStatus" => $blockedStatus, "blockDisplayError" => $blockDisplayError];
   }

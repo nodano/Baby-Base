@@ -40,8 +40,8 @@ if ($match !== false) {
     } catch (Exception $e) {
       require_once ROOT . "/resources/views/header.php";
       require_once ROOT . "/resources/views/error.php";
+      // echo $e->getMessage(); // 不明なエラーページに移動したら、っこのコメントアウトを外す
       require_once ROOT . "/resources/views/footer.php";
-      echo $e->getMessage();
     }
   }
 } else {

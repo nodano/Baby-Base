@@ -5,11 +5,13 @@
       <a href="<?php echo PUBLIC_URL . "mypage/info"; ?>" class="t-underline">ユーザー情報の更新</a>
     </li>
     <li>
-      <a href="<?php echo PUBLIC_URL . "mypage/profit"; ?>" class="t-underline">売上確認</a>
-      </li>
-    <li>
       <a href="<?php echo PUBLIC_URL . "mypage/favorite"; ?>" class="t-underline">お気に入り商品</a>
     </li>
+    <li>
+      <a href="<?php echo PUBLIC_URL . "mypage/profit"; ?>" class="t-underline">売上確認</a>
+    </li>
+    <li>
+      <a href="<?php echo PUBLIC_URL . "mypage/block"; ?>" class="t-underline">ブロック済みユーザー</a>
     </li>
   </ul>
 </div>

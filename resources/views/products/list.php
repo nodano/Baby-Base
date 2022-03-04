@@ -1,13 +1,17 @@
 <h1>商品一覧</h1>
-<form action="" method="get" style="margin-bottom: 1.9rem;">
-  <input type="text" name="search">
-  <input type="submit" value="検索">
-  <select name="sort">
-    <option value="idAsc">古い順</option>
-    <option value="idDesc">新しい順</option>
-    <option value="priceAsc">価格の安い順</option>
-    <option value="priceDesc">価格の高い順</option>
-  </select>
+<form action="" method="get" class="form form-search" style="margin-bottom: 1.9rem;">
+  <div class="form-item">
+    <div class="form-search-container">
+      <input type="text" name="search" class="form-item-input" value="<?php if (isset($_GET['search'])) echo Util::h($_GET['search']); ?>" placeholder="検索" maxlength="400">
+      <button type="submit"><i class="fas fa-search"></i></button>
+    </div>
+    <select name="sort" class="form-item-input">
+      <option value="idAsc">古い順</option>
+      <option value="idDesc">新しい順</option>
+      <option value="priceAsc">価格の安い順</option>
+      <option value="priceDesc">価格の高い順</option>
+    </select>
+  </div>
 </form>
 
 <div class="card-container">
