@@ -109,6 +109,7 @@ class ListingController extends Controller
         $file_name = date("Y-m-d-H-i-s") . "-" . $i;
 
         $handle->image_convert = 'png';
+        $handle->file_new_name_ext  = 'png';
         $handle->file_overwrite = true;
         $handle->file_auto_rename = false;
         $handle->file_src_name_body = $file_name;
